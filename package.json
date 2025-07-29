@@ -1,19 +1,19 @@
 {
   "name": "n8n-nodes-<...>",
   "version": "0.1.0",
-  "description": "",
+  "description": "n8n community nodes for Gyazo integration",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
   "homepage": "",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "Helpfeel Inc.",
+    "email": "support@gyazo.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/nota/n8n-nodes-gyazo.git"
   },
   "engines": {
     "node": ">=20.15"
