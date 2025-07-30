@@ -75,6 +75,8 @@ export class Gyazo implements INodeType {
 					const collectionId = this.getNodeParameter('collectionId', i, '') as string;
 					const accessPolicy = this.getNodeParameter('accessPolicy', i, 'anyone') as string;
 
+					const binaryBuffer = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
+					
 					const response = await this.helpers.request({
 						method: 'POST',
 						url: 'https://upload.gyazo.com/api/upload',
@@ -84,7 +86,7 @@ export class Gyazo implements INodeType {
 						formData: {
 							access_token: credentials.accessToken as string,
 							imagedata: {
-								value: binaryData.data,
+								value: binaryBuffer,
 								options: {
 									filename: binaryData.fileName || 'image',
 									contentType: binaryData.mimeType || 'application/octet-stream',
