@@ -134,7 +134,7 @@ const uploadOperation: INodeProperties[] = [
 			},
 		},
 		typeOptions: {
-			multipleValues: true,
+			multipleValues: false,
 		},
 		options: [
 			{
