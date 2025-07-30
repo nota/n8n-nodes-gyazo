@@ -122,6 +122,44 @@ const uploadOperation: INodeProperties[] = [
 		description: 'Name of the binary property which contains the image data',
 	},
 	{
+		displayName: 'App Name',
+		name: 'app',
+		type: 'string',
+		default: 'n8n',
+		displayOptions: {
+			show: {
+				resource: ['gyazo'],
+				operation: ['upload'],
+			},
+		},
+		routing: {
+			send: {
+				type: 'body',
+				property: 'app',
+			},
+		},
+		description: 'Application name',
+	},
+	{
+		displayName: 'Referer URL',
+		name: 'refererUrl',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['gyazo'],
+				operation: ['upload'],
+			},
+		},
+		routing: {
+			send: {
+				type: 'body',
+				property: 'referer_url',
+			},
+		},
+		description: 'Referer site URL',
+	},
+	{
 		displayName: 'Title',
 		name: 'title',
 		type: 'string',
@@ -160,44 +198,6 @@ const uploadOperation: INodeProperties[] = [
 		description: 'Description for the image',
 	},
 	{
-		displayName: 'Referer URL',
-		name: 'refererUrl',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['gyazo'],
-				operation: ['upload'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'referer_url',
-			},
-		},
-		description: 'Referer site URL',
-	},
-	{
-		displayName: 'App Name',
-		name: 'app',
-		type: 'string',
-		default: 'n8n',
-		displayOptions: {
-			show: {
-				resource: ['gyazo'],
-				operation: ['upload'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'app',
-			},
-		},
-		description: 'Application name',
-	},
-	{
 		displayName: 'Collection ID',
 		name: 'collectionId',
 		type: 'string',
@@ -216,38 +216,6 @@ const uploadOperation: INodeProperties[] = [
 		},
 		description: 'Collection ID to add image to',
 	},
-	{
-		displayName: 'Access Policy',
-		name: 'accessPolicy',
-		type: 'options',
-		options: [
-			{
-				name: 'Anyone',
-				value: 'anyone',
-			},
-			{
-				name: 'Only Me',
-				value: 'only_me',
-			},
-		],
-		default: 'anyone',
-		displayOptions: {
-			show: {
-				resource: ['gyazo'],
-				operation: ['upload'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'access_policy',
-			},
-		},
-		description: 'Access policy for the image',
-	},
 ];
 
-export const gyazoFields: INodeProperties[] = [
-	...searchOperation,
-	...uploadOperation,
-];
+export const gyazoFields: INodeProperties[] = [...searchOperation, ...uploadOperation];

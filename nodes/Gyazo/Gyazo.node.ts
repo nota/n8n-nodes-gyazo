@@ -65,18 +65,17 @@ export class Gyazo implements INodeType {
 				if (operation === 'upload') {
 					const credentials = await this.getCredentials('gyazoApi');
 					const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i) as string;
-					
+
 					const binaryData = this.helpers.assertBinaryData(i, binaryPropertyName);
-					
+
+					const app = this.getNodeParameter('app', i, 'n8n') as string;
+					const refererUrl = this.getNodeParameter('refererUrl', i, '') as string;
 					const title = this.getNodeParameter('title', i, '') as string;
 					const desc = this.getNodeParameter('desc', i, '') as string;
-					const refererUrl = this.getNodeParameter('refererUrl', i, '') as string;
-					const app = this.getNodeParameter('app', i, 'n8n') as string;
 					const collectionId = this.getNodeParameter('collectionId', i, '') as string;
-					const accessPolicy = this.getNodeParameter('accessPolicy', i, 'anyone') as string;
 
 					const binaryBuffer = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
-					
+
 					const response = await this.helpers.request({
 						method: 'POST',
 						url: 'https://upload.gyazo.com/api/upload',
@@ -92,12 +91,11 @@ export class Gyazo implements INodeType {
 									contentType: binaryData.mimeType || 'application/octet-stream',
 								},
 							},
+							app,
+							...(refererUrl && { referer_url: refererUrl }),
 							...(title && { title }),
 							...(desc && { desc }),
-							...(refererUrl && { referer_url: refererUrl }),
-							app,
 							...(collectionId && { collection_id: collectionId }),
-							access_policy: accessPolicy,
 						},
 						json: true,
 					});
@@ -111,20 +109,16 @@ export class Gyazo implements INodeType {
 					const page = this.getNodeParameter('page', i, 1) as number;
 					const per = this.getNodeParameter('per', i, 20) as number;
 
-					const response = await this.helpers.httpRequestWithAuthentication.call(
-						this,
-						'gyazoApi',
-						{
-							method: 'GET',
-							url: 'https://api.gyazo.com/api/search',
-							qs: {
-								query,
-								page,
-								per,
-							},
-							json: true,
+					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
+						method: 'GET',
+						url: 'https://api.gyazo.com/api/search',
+						qs: {
+							query,
+							page,
+							per,
 						},
-					);
+						json: true,
+					});
 
 					returnData.push({
 						json: response,
