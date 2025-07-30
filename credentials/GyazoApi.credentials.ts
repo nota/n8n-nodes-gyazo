@@ -1,5 +1,4 @@
 import {
-	IAuthenticateGeneric,
 	ICredentialTestRequest,
 	ICredentialType,
 	INodeProperties,
@@ -24,19 +23,11 @@ export class GyazoApi implements ICredentialType {
 		},
 	];
 
-	authenticate: IAuthenticateGeneric = {
-		type: 'generic',
-		properties: {
-			headers: {
-				Authorization: '={{"Bearer " + $credentials.accessToken}}',
-			},
-		},
-	};
 
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: 'https://api.gyazo.com',
-			url: '/api/images',
+			url: '/api/images?access_token={{$credentials.accessToken}}',
 			method: 'GET',
 		},
 	};
