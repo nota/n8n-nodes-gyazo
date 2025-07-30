@@ -18,7 +18,7 @@ export class GyazoApi implements ICredentialType {
 			typeOptions: {
 				password: true,
 			},
-			description: 'Your Gyazo access token',
+			description: 'Your Gyazo API access token',
 		},
 	];
 
