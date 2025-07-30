@@ -122,99 +122,87 @@ const uploadOperation: INodeProperties[] = [
 		description: 'Name of the binary property which contains the image data',
 	},
 	{
-		displayName: 'App Name',
-		name: 'app',
-		type: 'string',
-		default: 'n8n',
+		displayName: 'Options',
+		name: 'options',
+		type: 'fixedCollection',
+		placeholder: 'Add Option',
+		default: {},
 		displayOptions: {
 			show: {
 				resource: ['gyazo'],
 				operation: ['upload'],
 			},
 		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'app',
-			},
+		typeOptions: {
+			multipleValues: true,
 		},
-		description: 'Application name',
-	},
-	{
-		displayName: 'Referer URL',
-		name: 'refererUrl',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['gyazo'],
-				operation: ['upload'],
+		options: [
+			{
+				name: 'app',
+				displayName: 'App Name',
+				values: [
+					{
+						displayName: 'App Name',
+						name: 'app',
+						type: 'string',
+						default: 'n8n',
+						description: 'Application name',
+					},
+				],
 			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'referer_url',
+			{
+				name: 'refererUrl',
+				displayName: 'Referer URL',
+				values: [
+					{
+						displayName: 'Referer URL',
+						name: 'refererUrl',
+						type: 'string',
+						default: '',
+						description: 'Referer site URL',
+					},
+				],
 			},
-		},
-		description: 'Referer site URL',
-	},
-	{
-		displayName: 'Title',
-		name: 'title',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['gyazo'],
-				operation: ['upload'],
+			{
+				name: 'title',
+				displayName: 'Title',
+				values: [
+					{
+						displayName: 'Title',
+						name: 'title',
+						type: 'string',
+						default: '',
+						description: 'Title for the image',
+					},
+				],
 			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'title',
+			{
+				name: 'desc',
+				displayName: 'Description',
+				values: [
+					{
+						displayName: 'Description',
+						name: 'desc',
+						type: 'string',
+						default: '',
+						description: 'Description for the image',
+					},
+				],
 			},
-		},
-		description: 'Title for the image',
-	},
-	{
-		displayName: 'Description',
-		name: 'desc',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['gyazo'],
-				operation: ['upload'],
+			{
+				name: 'collectionId',
+				displayName: 'Collection ID',
+				values: [
+					{
+						displayName: 'Collection ID',
+						name: 'collectionId',
+						type: 'string',
+						default: '',
+						description: 'Collection ID to add image to',
+					},
+				],
 			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'desc',
-			},
-		},
-		description: 'Description for the image',
-	},
-	{
-		displayName: 'Collection ID',
-		name: 'collectionId',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['gyazo'],
-				operation: ['upload'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'body',
-				property: 'collection_id',
-			},
-		},
-		description: 'Collection ID to add image to',
+		],
 	},
 ];
 

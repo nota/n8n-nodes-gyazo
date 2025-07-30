@@ -68,11 +68,13 @@ export class Gyazo implements INodeType {
 
 					const binaryData = this.helpers.assertBinaryData(i, binaryPropertyName);
 
-					const app = this.getNodeParameter('app', i, 'n8n') as string;
-					const refererUrl = this.getNodeParameter('refererUrl', i, '') as string;
-					const title = this.getNodeParameter('title', i, '') as string;
-					const desc = this.getNodeParameter('desc', i, '') as string;
-					const collectionId = this.getNodeParameter('collectionId', i, '') as string;
+					const options = this.getNodeParameter('options', i, {}) as any;
+					
+					const app = options.app?.[0]?.app || 'n8n';
+					const refererUrl = options.refererUrl?.[0]?.refererUrl || '';
+					const title = options.title?.[0]?.title || '';
+					const desc = options.desc?.[0]?.desc || '';
+					const collectionId = options.collectionId?.[0]?.collectionId || '';
 
 					const binaryBuffer = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
 
