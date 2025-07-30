@@ -169,26 +169,31 @@ export class Gyazo implements INodeType {
 						}
 
 						const binaryData = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
+						const fileName = item.binary[binaryPropertyName].fileName || 'image.png';
 
-						const body: IDataObject = {
-							imagedata: binaryData,
+						const formData: IDataObject = {
+							imagedata: {
+								value: binaryData,
+								options: {
+									filename: fileName,
+								},
+							},
 						};
 
 						if (additionalFields.title) {
-							body.title = additionalFields.title as string;
+							formData.title = additionalFields.title as string;
 						}
 						if (additionalFields.desc) {
-							body.desc = additionalFields.desc as string;
+							formData.desc = additionalFields.desc as string;
 						}
 
 						const options: IHttpRequestOptions = {
 							method: 'POST',
 							url: 'https://upload.gyazo.com/api/upload',
-							body,
+							body: formData,
 							headers: {
 								'Content-Type': 'multipart/form-data',
 							},
-							json: true,
 						};
 
 						const responseData = await this.helpers.httpRequestWithAuthentication.call(
