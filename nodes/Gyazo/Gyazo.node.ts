@@ -195,7 +195,7 @@ export class Gyazo implements INodeType {
 
 						const bodyParameters: IDataObject[] = [
 							{
-								name: 'Access Token',
+								name: 'access_token',
 								value: accessToken,
 							},
 							{
