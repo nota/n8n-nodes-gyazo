@@ -68,27 +68,12 @@ export class Gyazo implements INodeType {
 					
 					const binaryData = this.helpers.assertBinaryData(i, binaryPropertyName);
 					
-					const bodyData: { [key: string]: string } = {
-						access_token: credentials.accessToken as string,
-					};
-
 					const title = this.getNodeParameter('title', i, '') as string;
-					if (title) bodyData.title = title;
-
 					const desc = this.getNodeParameter('desc', i, '') as string;
-					if (desc) bodyData.desc = desc;
-
 					const refererUrl = this.getNodeParameter('refererUrl', i, '') as string;
-					if (refererUrl) bodyData.referer_url = refererUrl;
-
 					const app = this.getNodeParameter('app', i, 'n8n') as string;
-					bodyData.app = app;
-
 					const collectionId = this.getNodeParameter('collectionId', i, '') as string;
-					if (collectionId) bodyData.collection_id = collectionId;
-
 					const accessPolicy = this.getNodeParameter('accessPolicy', i, 'anyone') as string;
-					bodyData.access_policy = accessPolicy;
 
 					const response = await this.helpers.request({
 						method: 'POST',
@@ -97,14 +82,20 @@ export class Gyazo implements INodeType {
 							Authorization: `Bearer ${credentials.accessToken}`,
 						},
 						formData: {
-							...bodyData,
+							access_token: credentials.accessToken as string,
 							imagedata: {
 								value: binaryData.data,
 								options: {
 									filename: binaryData.fileName || 'image',
-									contentType: binaryData.mimeType,
+									contentType: binaryData.mimeType || 'application/octet-stream',
 								},
 							},
+							...(title && { title }),
+							...(desc && { desc }),
+							...(refererUrl && { referer_url: refererUrl }),
+							app,
+							...(collectionId && { collection_id: collectionId }),
+							access_policy: accessPolicy,
 						},
 						json: true,
 					});
