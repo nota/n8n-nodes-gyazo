@@ -85,7 +85,6 @@ export class Gyazo implements INodeType {
 							Authorization: `Bearer ${credentials.accessToken}`,
 						},
 						formData: {
-							access_token: credentials.accessToken as string,
 							imagedata: {
 								value: binaryBuffer,
 								options: {
