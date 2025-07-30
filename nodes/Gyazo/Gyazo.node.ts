@@ -139,20 +139,19 @@ export class Gyazo implements INodeType {
 				if (resource === 'image') {
 					if (operation === 'search') {
 						const query = this.getNodeParameter('query', i) as string;
-						const credentials = await this.getCredentials('gyazoApi');
-						const accessToken = credentials.accessToken as string;
 
 						const options: IHttpRequestOptions = {
 							method: 'GET',
 							url: 'https://api.gyazo.com/api/images',
-							qs: { 
-								q: query,
-								access_token: accessToken 
-							},
+							qs: { q: query },
 							json: true,
 						};
 
-						const responseData = await this.helpers.httpRequest(options);
+						const responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'gyazoApi',
+							options,
+						);
 
 						const executionData = this.helpers.returnJsonArray(responseData);
 						returnData.push(...executionData);
@@ -171,16 +170,12 @@ export class Gyazo implements INodeType {
 
 						const binaryData = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
 						const fileName = item.binary[binaryPropertyName].fileName || 'image.png';
-						const credentials = await this.getCredentials('gyazoApi');
-						const accessToken = credentials.accessToken as string;
 
 						const formData: IDataObject = {
-							access_token: accessToken,
 							imagedata: {
 								value: binaryData,
 								options: {
 									filename: fileName,
-									contentType: item.binary[binaryPropertyName].mimeType,
 								},
 							},
 						};
@@ -201,7 +196,11 @@ export class Gyazo implements INodeType {
 							},
 						};
 
-						const responseData = await this.helpers.httpRequest(options);
+						const responseData = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'gyazoApi',
+							options,
+						);
 
 						returnData.push({ json: responseData, binary: {}, pairedItem: i });
 					}
