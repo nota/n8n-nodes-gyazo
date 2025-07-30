@@ -109,11 +109,18 @@ export class Gyazo implements INodeType {
 				},
 				options: [
 					{
-						displayName: 'Title',
-						name: 'title',
+						displayName: 'App Name',
+						name: 'app',
+						type: 'string',
+						default: 'n8n',
+						description: 'Name of the application uploading the image',
+					},
+					{
+						displayName: 'Collection ID',
+						name: 'collection_id',
 						type: 'string',
 						default: '',
-						description: 'Title for the uploaded image',
+						description: 'Gyazo collection ID to organize the uploaded image',
 					},
 					{
 						displayName: 'Description',
@@ -121,6 +128,20 @@ export class Gyazo implements INodeType {
 						type: 'string',
 						default: '',
 						description: 'Description for the uploaded image',
+					},
+					{
+						displayName: 'Referer URL',
+						name: 'referer_url',
+						type: 'string',
+						default: '',
+						description: 'URL of the page where the image is being uploaded from',
+					},
+					{
+						displayName: 'Title',
+						name: 'title',
+						type: 'string',
+						default: '',
+						description: 'Title for the uploaded image',
 					},
 				],
 			},
@@ -139,19 +160,20 @@ export class Gyazo implements INodeType {
 				if (resource === 'image') {
 					if (operation === 'search') {
 						const query = this.getNodeParameter('query', i) as string;
+						const credentials = await this.getCredentials('gyazoApi');
+						const accessToken = credentials.accessToken as string;
 
 						const options: IHttpRequestOptions = {
 							method: 'GET',
 							url: 'https://api.gyazo.com/api/images',
-							qs: { q: query },
+							qs: { 
+								q: query,
+								access_token: accessToken 
+							},
 							json: true,
 						};
 
-						const responseData = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'gyazoApi',
-							options,
-						);
+						const responseData = await this.helpers.httpRequest(options);
 
 						const executionData = this.helpers.returnJsonArray(responseData);
 						returnData.push(...executionData);
@@ -168,39 +190,62 @@ export class Gyazo implements INodeType {
 							);
 						}
 
-						const binaryData = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
-						const fileName = item.binary[binaryPropertyName].fileName || 'image.png';
+						const credentials = await this.getCredentials('gyazoApi');
+						const accessToken = credentials.accessToken as string;
 
-						const formData: IDataObject = {
-							imagedata: {
-								value: binaryData,
-								options: {
-									filename: fileName,
-								},
+						const bodyParameters: IDataObject[] = [
+							{
+								name: 'Access Token',
+								value: accessToken,
 							},
-						};
+							{
+								parameterType: 'formBinaryData',
+								name: 'imagedata',
+								inputDataFieldName: binaryPropertyName,
+							},
+						];
 
 						if (additionalFields.title) {
-							formData.title = additionalFields.title as string;
+							bodyParameters.push({
+								name: 'title',
+								value: additionalFields.title as string,
+							});
 						}
 						if (additionalFields.desc) {
-							formData.desc = additionalFields.desc as string;
+							bodyParameters.push({
+								name: 'desc',
+								value: additionalFields.desc as string,
+							});
+						}
+						if (additionalFields.referer_url) {
+							bodyParameters.push({
+								name: 'referer_url',
+								value: additionalFields.referer_url as string,
+							});
+						}
+						if (additionalFields.app) {
+							bodyParameters.push({
+								name: 'app',
+								value: additionalFields.app as string,
+							});
+						}
+						if (additionalFields.collection_id) {
+							bodyParameters.push({
+								name: 'collection_id',
+								value: additionalFields.collection_id as string,
+							});
 						}
 
 						const options: IHttpRequestOptions = {
 							method: 'POST',
 							url: 'https://upload.gyazo.com/api/upload',
-							body: formData,
-							headers: {
-								'Content-Type': 'multipart/form-data',
+							body: {
+								parameters: bodyParameters,
 							},
+							json: false,
 						};
 
-						const responseData = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'gyazoApi',
-							options,
-						);
+						const responseData = await this.helpers.httpRequest(options);
 
 						returnData.push({ json: responseData, binary: {}, pairedItem: i });
 					}
