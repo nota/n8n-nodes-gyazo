@@ -160,20 +160,17 @@ export class Gyazo implements INodeType {
 				if (resource === 'image') {
 					if (operation === 'search') {
 						const query = this.getNodeParameter('query', i) as string;
-						const credentials = await this.getCredentials('gyazoApi');
-						const accessToken = credentials.accessToken as string;
 
 						const options: IHttpRequestOptions = {
 							method: 'GET',
 							url: 'https://api.gyazo.com/api/images',
 							qs: { 
 								q: query,
-								access_token: accessToken 
 							},
 							json: true,
 						};
 
-						const responseData = await this.helpers.httpRequest(options);
+						const responseData = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', options);
 
 						const executionData = this.helpers.returnJsonArray(responseData);
 						returnData.push(...executionData);
@@ -190,62 +187,46 @@ export class Gyazo implements INodeType {
 							);
 						}
 
-						const credentials = await this.getCredentials('gyazoApi');
-						const accessToken = credentials.accessToken as string;
+						const binaryData = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
+						const fileName = item.binary[binaryPropertyName].fileName || 'image.png';
+						const mimeType = item.binary[binaryPropertyName].mimeType || 'image/png';
 
-						const bodyParameters: IDataObject[] = [
-							{
-								name: 'Access_token',
-								value: accessToken,
+						const formData: IDataObject = {
+							imagedata: {
+								value: binaryData,
+								options: {
+									filename: fileName,
+									contentType: mimeType,
+								},
 							},
-							{
-								parameterType: 'formBinaryData',
-								name: 'imagedata',
-								inputDataFieldName: binaryPropertyName,
-							},
-						];
+						};
 
 						if (additionalFields.title) {
-							bodyParameters.push({
-								name: 'title',
-								value: additionalFields.title as string,
-							});
+							formData.title = additionalFields.title as string;
 						}
 						if (additionalFields.desc) {
-							bodyParameters.push({
-								name: 'desc',
-								value: additionalFields.desc as string,
-							});
+							formData.desc = additionalFields.desc as string;
 						}
 						if (additionalFields.referer_url) {
-							bodyParameters.push({
-								name: 'referer_url',
-								value: additionalFields.referer_url as string,
-							});
+							formData.referer_url = additionalFields.referer_url as string;
 						}
 						if (additionalFields.app) {
-							bodyParameters.push({
-								name: 'app',
-								value: additionalFields.app as string,
-							});
+							formData.app = additionalFields.app as string;
 						}
 						if (additionalFields.collection_id) {
-							bodyParameters.push({
-								name: 'collection_id',
-								value: additionalFields.collection_id as string,
-							});
+							formData.collection_id = additionalFields.collection_id as string;
 						}
 
 						const options: IHttpRequestOptions = {
 							method: 'POST',
 							url: 'https://upload.gyazo.com/api/upload',
-							body: {
-								parameters: bodyParameters,
+							body: formData,
+							headers: {
+								'Content-Type': 'multipart/form-data',
 							},
-							json: false,
 						};
 
-						const responseData = await this.helpers.httpRequest(options);
+						const responseData = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', options);
 
 						returnData.push({ json: responseData, binary: {}, pairedItem: i });
 					}
