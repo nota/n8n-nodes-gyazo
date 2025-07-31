@@ -8,7 +8,7 @@ export const gyazoOperations: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['gyazo'],
+				resource: ['image'],
 			},
 		},
 		options: [
@@ -78,7 +78,7 @@ const searchOperation: INodeProperties[] = [
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['gyazo'],
+				resource: ['image'],
 				operation: ['search'],
 			},
 		},
@@ -97,7 +97,7 @@ const searchOperation: INodeProperties[] = [
 		default: 1,
 		displayOptions: {
 			show: {
-				resource: ['gyazo'],
+				resource: ['image'],
 				operation: ['search'],
 			},
 		},
@@ -116,7 +116,7 @@ const searchOperation: INodeProperties[] = [
 		default: 20,
 		displayOptions: {
 			show: {
-				resource: ['gyazo'],
+				resource: ['image'],
 				operation: ['search'],
 			},
 		},
@@ -138,7 +138,7 @@ const listOperation: INodeProperties[] = [
 		default: 1,
 		displayOptions: {
 			show: {
-				resource: ['gyazo'],
+				resource: ['image'],
 				operation: ['list'],
 			},
 		},
@@ -157,7 +157,7 @@ const listOperation: INodeProperties[] = [
 		default: 20,
 		displayOptions: {
 			show: {
-				resource: ['gyazo'],
+				resource: ['image'],
 				operation: ['list'],
 			},
 		},
@@ -180,7 +180,7 @@ const getOperation: INodeProperties[] = [
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['gyazo'],
+				resource: ['image'],
 				operation: ['get'],
 			},
 		},
@@ -235,7 +235,7 @@ const uploadOperation: INodeProperties[] = [
 		required: true,
 		displayOptions: {
 			show: {
-				resource: ['gyazo'],
+				resource: ['image'],
 				operation: ['upload'],
 			},
 		},
@@ -249,7 +249,7 @@ const uploadOperation: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: ['gyazo'],
+				resource: ['image'],
 				operation: ['upload'],
 			},
 		},
