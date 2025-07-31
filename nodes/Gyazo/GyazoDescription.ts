@@ -173,10 +173,10 @@ const listOperation: INodeProperties[] = [
 
 const getOperation: INodeProperties[] = [
 	{
-		displayName: 'Get By',
-		name: 'getBy',
-		type: 'options',
-		default: 'imageId',
+		displayName: 'Image',
+		name: 'image',
+		type: 'resourceLocator',
+		default: { mode: 'id', value: '' },
 		required: true,
 		displayOptions: {
 			show: {
@@ -184,48 +184,45 @@ const getOperation: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
-		options: [
+		modes: [
 			{
-				name: 'By ID',
-				value: 'imageId',
-				description: 'Get image by Image ID',
+				displayName: 'By ID',
+				name: 'id',
+				type: 'string',
+				hint: 'Enter an Image ID',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: '^[a-f0-9]+$',
+							errorMessage: 'Invalid Image ID format',
+						},
+					},
+				],
+				placeholder: 'abc123def456',
 			},
 			{
-				name: 'By URL',
-				value: 'url',
-				description: 'Get image by Gyazo page URL',
+				displayName: 'By URL',
+				name: 'url',
+				type: 'string',
+				hint: 'Enter a Gyazo URL',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: '^https://gyazo\\.com/',
+							errorMessage: 'Invalid Gyazo URL format',
+						},
+					},
+				],
+				placeholder: 'https://gyazo.com/abc123def456',
+				extractValue: {
+					type: 'regex',
+					regex: 'gyazo\\.com/([a-f0-9]+)',
+				},
 			},
 		],
-	},
-	{
-		displayName: 'Image ID',
-		name: 'imageId',
-		type: 'string',
-		default: '',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['gyazo'],
-				operation: ['get'],
-				getBy: ['imageId'],
-			},
-		},
-		description: 'The unique identifier of the image',
-	},
-	{
-		displayName: 'Gyazo URL',
-		name: 'url',
-		type: 'string',
-		default: '',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['gyazo'],
-				operation: ['get'],
-				getBy: ['url'],
-			},
-		},
-		description: 'The Gyazo page URL (e.g., https://gyazo.com/abc123...)',
+		description: 'The Gyazo image to retrieve',
 	},
 ];
 
