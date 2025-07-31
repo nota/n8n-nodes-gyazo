@@ -108,7 +108,7 @@ const searchOperation: INodeProperties[] = [
 
 const uploadOperation: INodeProperties[] = [
 	{
-		displayName: 'Input Data Field Name',
+		displayName: 'Image Binary',
 		name: 'binaryPropertyName',
 		type: 'string',
 		default: 'data',
