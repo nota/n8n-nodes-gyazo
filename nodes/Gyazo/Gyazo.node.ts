@@ -16,7 +16,7 @@ export class Gyazo implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"]}}',
-		description: 'Interact with Gyazo API for image search and upload',
+		description: 'Interact with Gyazo API for image list, get, search and upload operations',
 		defaults: {
 			name: 'Gyazo',
 		},
@@ -62,7 +62,52 @@ export class Gyazo implements INodeType {
 			try {
 				const operation = this.getNodeParameter('operation', i) as string;
 
-				if (operation === 'upload') {
+				if (operation === 'list') {
+					const page = this.getNodeParameter('page', i, 1) as number;
+					const per = this.getNodeParameter('per', i, 20) as number;
+
+					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
+						method: 'GET',
+						url: 'https://api.gyazo.com/api/images',
+						qs: {
+							page,
+							per_page: per,
+						},
+						json: true,
+					});
+
+					returnData.push({
+						json: response,
+						pairedItem: { item: i },
+					});
+				} else if (operation === 'get') {
+					const getBy = this.getNodeParameter('getBy', i, {}) as any;
+					let imageId: string;
+
+					if (getBy.imageId?.[0]?.imageId) {
+						imageId = getBy.imageId[0].imageId;
+					} else if (getBy.url?.[0]?.url) {
+						const url = getBy.url[0].url;
+						const match = url.match(/gyazo\.com\/([a-f0-9]+)/i);
+						if (!match) {
+							throw new NodeOperationError(this.getNode(), `Invalid Gyazo URL format: ${url}`, { itemIndex: i });
+						}
+						imageId = match[1];
+					} else {
+						throw new NodeOperationError(this.getNode(), 'Either Image ID or URL must be provided', { itemIndex: i });
+					}
+
+					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
+						method: 'GET',
+						url: `https://api.gyazo.com/api/images/${imageId}`,
+						json: true,
+					});
+
+					returnData.push({
+						json: response,
+						pairedItem: { item: i },
+					});
+				} else if (operation === 'upload') {
 					const credentials = await this.getCredentials('gyazoApi');
 					const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i) as string;
 

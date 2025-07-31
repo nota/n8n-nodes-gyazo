@@ -13,6 +13,30 @@ export const gyazoOperations: INodeProperties[] = [
 		},
 		options: [
 			{
+				name: 'List',
+				value: 'list',
+				description: 'Get a list of user\'s saved images',
+				action: 'List user images',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/api/images',
+					},
+				},
+			},
+			{
+				name: 'Get',
+				value: 'get',
+				description: 'Get a specific image by ID or URL',
+				action: 'Get an image',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/api/images/{{$parameter["imageId"]}}',
+					},
+				},
+			},
+			{
 				name: 'Search',
 				value: 'search',
 				description: 'Search for images',
@@ -103,6 +127,97 @@ const searchOperation: INodeProperties[] = [
 			},
 		},
 		description: 'Number of results per page (max 100)',
+	},
+];
+
+const listOperation: INodeProperties[] = [
+	{
+		displayName: 'Page',
+		name: 'page',
+		type: 'number',
+		default: 1,
+		displayOptions: {
+			show: {
+				resource: ['gyazo'],
+				operation: ['list'],
+			},
+		},
+		routing: {
+			send: {
+				type: 'query',
+				property: 'page',
+			},
+		},
+		description: 'Page number for pagination',
+	},
+	{
+		displayName: 'Per Page',
+		name: 'per',
+		type: 'number',
+		default: 20,
+		displayOptions: {
+			show: {
+				resource: ['gyazo'],
+				operation: ['list'],
+			},
+		},
+		routing: {
+			send: {
+				type: 'query',
+				property: 'per_page',
+			},
+		},
+		description: 'Number of results per page (max 100)',
+	},
+];
+
+const getOperation: INodeProperties[] = [
+	{
+		displayName: 'Get By',
+		name: 'getBy',
+		type: 'fixedCollection',
+		placeholder: 'Add Parameter',
+		default: {},
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['gyazo'],
+				operation: ['get'],
+			},
+		},
+		typeOptions: {
+			multipleValues: false,
+		},
+		options: [
+			{
+				name: 'imageId',
+				displayName: 'By Image ID',
+				values: [
+					{
+						displayName: 'Image ID',
+						name: 'imageId',
+						type: 'string',
+						default: '',
+						required: true,
+						description: 'The unique identifier of the image',
+					},
+				],
+			},
+			{
+				name: 'url',
+				displayName: 'By URL',
+				values: [
+					{
+						displayName: 'Gyazo URL',
+						name: 'url',
+						type: 'string',
+						default: '',
+						required: true,
+						description: 'The Gyazo page URL (e.g., https://gyazo.com/abc123...)',
+					},
+				],
+			},
+		],
 	},
 ];
 
@@ -206,4 +321,4 @@ const uploadOperation: INodeProperties[] = [
 	},
 ];
 
-export const gyazoFields: INodeProperties[] = [...searchOperation, ...uploadOperation];
+export const gyazoFields: INodeProperties[] = [...searchOperation, ...listOperation, ...getOperation, ...uploadOperation];
