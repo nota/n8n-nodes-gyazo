@@ -43,11 +43,11 @@ export class Gyazo implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
-						name: 'Gyazo',
-						value: 'gyazo',
+						name: 'Image',
+						value: 'image',
 					},
 				],
-				default: 'gyazo',
+				default: 'image',
 			},
 			...gyazoOperations,
 			...gyazoFields,
