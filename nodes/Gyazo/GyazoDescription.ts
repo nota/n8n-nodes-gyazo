@@ -15,7 +15,7 @@ export const gyazoOperations: INodeProperties[] = [
 			{
 				name: 'List',
 				value: 'list',
-				description: 'Get a list of user\'s saved images',
+				description: "Get a list of user's saved images",
 				action: 'List user images',
 				routing: {
 					request: {
@@ -194,12 +194,12 @@ const getOperation: INodeProperties[] = [
 					{
 						type: 'regex',
 						properties: {
-							regex: '^[a-f0-9]+$',
+							regex: '^[a-f0-9]{32}$',
 							errorMessage: 'Invalid Image ID format',
 						},
 					},
 				],
-				placeholder: 'abc123def456',
+				placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
 			},
 			{
 				displayName: 'By URL',
@@ -210,15 +210,15 @@ const getOperation: INodeProperties[] = [
 					{
 						type: 'regex',
 						properties: {
-							regex: '^https://gyazo\\.com/',
+							regex: '^https://gyazo\\.com/[a-f0-9]{32}$',
 							errorMessage: 'Invalid Gyazo URL format',
 						},
 					},
 				],
-				placeholder: 'https://gyazo.com/abc123def456',
+				placeholder: 'https://gyazo.com/ab1234cd5678ef9012ab3456cd7890ef',
 				extractValue: {
 					type: 'regex',
-					regex: 'gyazo\\.com/([a-f0-9]+)',
+					regex: '^https://gyazo\\.com/([a-f0-9]{32})$',
 				},
 			},
 		],
@@ -326,4 +326,9 @@ const uploadOperation: INodeProperties[] = [
 	},
 ];
 
-export const gyazoFields: INodeProperties[] = [...searchOperation, ...listOperation, ...getOperation, ...uploadOperation];
+export const gyazoFields: INodeProperties[] = [
+	...searchOperation,
+	...listOperation,
+	...getOperation,
+	...uploadOperation,
+];

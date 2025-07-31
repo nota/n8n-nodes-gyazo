@@ -87,13 +87,19 @@ export class Gyazo implements INodeType {
 					if (image.mode === 'id') {
 						imageId = image.value;
 					} else if (image.mode === 'url') {
-						const match = image.value.match(/gyazo\.com\/([a-f0-9]+)/i);
+						const match = image.value.match(/gyazo\.com\/([a-f0-9]{32})$/i);
 						if (!match) {
-							throw new NodeOperationError(this.getNode(), `Invalid Gyazo URL format: ${image.value}`, { itemIndex: i });
+							throw new NodeOperationError(
+								this.getNode(),
+								`Invalid Gyazo URL format: ${image.value}`,
+								{ itemIndex: i },
+							);
 						}
 						imageId = match[1];
 					} else {
-						throw new NodeOperationError(this.getNode(), 'Invalid image parameter mode', { itemIndex: i });
+						throw new NodeOperationError(this.getNode(), 'Invalid image parameter mode', {
+							itemIndex: i,
+						});
 					}
 
 					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
