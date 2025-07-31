@@ -81,20 +81,20 @@ export class Gyazo implements INodeType {
 						pairedItem: { item: i },
 					});
 				} else if (operation === 'get') {
-					const getBy = this.getNodeParameter('getBy', i, {}) as any;
+					const getBy = this.getNodeParameter('getBy', i) as string;
 					let imageId: string;
 
-					if (getBy.imageId?.[0]?.imageId) {
-						imageId = getBy.imageId[0].imageId;
-					} else if (getBy.url?.[0]?.url) {
-						const url = getBy.url[0].url;
+					if (getBy === 'imageId') {
+						imageId = this.getNodeParameter('imageId', i) as string;
+					} else if (getBy === 'url') {
+						const url = this.getNodeParameter('url', i) as string;
 						const match = url.match(/gyazo\.com\/([a-f0-9]+)/i);
 						if (!match) {
 							throw new NodeOperationError(this.getNode(), `Invalid Gyazo URL format: ${url}`, { itemIndex: i });
 						}
 						imageId = match[1];
 					} else {
-						throw new NodeOperationError(this.getNode(), 'Either Image ID or URL must be provided', { itemIndex: i });
+						throw new NodeOperationError(this.getNode(), 'Invalid getBy parameter', { itemIndex: i });
 					}
 
 					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {

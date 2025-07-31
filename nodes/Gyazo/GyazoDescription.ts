@@ -175,9 +175,8 @@ const getOperation: INodeProperties[] = [
 	{
 		displayName: 'Get By',
 		name: 'getBy',
-		type: 'fixedCollection',
-		placeholder: 'Add Parameter',
-		default: {},
+		type: 'options',
+		default: 'imageId',
 		required: true,
 		displayOptions: {
 			show: {
@@ -185,39 +184,48 @@ const getOperation: INodeProperties[] = [
 				operation: ['get'],
 			},
 		},
-		typeOptions: {
-			multipleValues: false,
-		},
 		options: [
 			{
-				name: 'imageId',
-				displayName: 'By Image ID',
-				values: [
-					{
-						displayName: 'Image ID',
-						name: 'imageId',
-						type: 'string',
-						default: '',
-						required: true,
-						description: 'The unique identifier of the image',
-					},
-				],
+				name: 'By ID',
+				value: 'imageId',
+				description: 'Get image by Image ID',
 			},
 			{
-				name: 'url',
-				displayName: 'By URL',
-				values: [
-					{
-						displayName: 'Gyazo URL',
-						name: 'url',
-						type: 'string',
-						default: '',
-						required: true,
-						description: 'The Gyazo page URL (e.g., https://gyazo.com/abc123...)',
-					},
-				],
+				name: 'By URL',
+				value: 'url',
+				description: 'Get image by Gyazo page URL',
 			},
 		],
+	},
+	{
+		displayName: 'Image ID',
+		name: 'imageId',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['gyazo'],
+				operation: ['get'],
+				getBy: ['imageId'],
+			},
+		},
+		description: 'The unique identifier of the image',
+	},
+	{
+		displayName: 'Gyazo URL',
+		name: 'url',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['gyazo'],
+				operation: ['get'],
+				getBy: ['url'],
+			},
+		},
+		description: 'The Gyazo page URL (e.g., https://gyazo.com/abc123...)',
 	},
 ];
 
