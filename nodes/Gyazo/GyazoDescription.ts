@@ -218,7 +218,7 @@ const getOperation: INodeProperties[] = [
 				placeholder: 'https://gyazo.com/ab1234cd5678ef9012ab3456cd7890ef',
 				extractValue: {
 					type: 'regex',
-					regex: '^(?:https://gyazo\\.com/)?([a-f0-9]{32})$',
+					regex: '^https://gyazo\\.com/([a-f0-9]{32})$',
 				},
 			},
 		],
