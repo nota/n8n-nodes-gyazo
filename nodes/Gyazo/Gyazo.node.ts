@@ -87,7 +87,7 @@ export class Gyazo implements INodeType {
 					if (image.mode === 'id') {
 						imageId = image.value;
 					} else if (image.mode === 'url') {
-						const match = image.value.match(/gyazo\.com\/([a-f0-9]{32})$/i);
+						const match = image.value.match(/^https:\/\/gyazo\.com\/([a-f0-9]{32})$/i);
 						if (!match) {
 							throw new NodeOperationError(
 								this.getNode(),
