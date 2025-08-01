@@ -16,7 +16,7 @@
 		"url": "https://github.com/nota/n8n-nodes-gyazo.git"
 	},
 	"engines": {
-		"node": ">=20.15"
+		"node": ">=22.0.0"
 	},
 	"main": "index.js",
 	"scripts": {
