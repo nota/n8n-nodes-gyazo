@@ -63,8 +63,10 @@ export class Gyazo implements INodeType {
 				const operation = this.getNodeParameter('operation', i) as string;
 
 				if (operation === 'list') {
-					const page = this.getNodeParameter('page', i, 1) as number;
-					const per = this.getNodeParameter('per', i, 20) as number;
+					const options = this.getNodeParameter('options', i, {}) as any;
+					const pagination = options.pagination || {};
+					const page = pagination.page || 1;
+					const per = pagination.per || 20;
 
 					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
 						method: 'GET',
@@ -121,11 +123,11 @@ export class Gyazo implements INodeType {
 
 					const options = this.getNodeParameter('options', i, {}) as any;
 
-					const app = options.app?.[0]?.app || 'n8n';
-					const refererUrl = options.refererUrl?.[0]?.refererUrl || '';
-					const title = options.title?.[0]?.title || '';
-					const desc = options.desc?.[0]?.desc || '';
-					const collectionId = options.collectionId?.[0]?.collectionId || '';
+					const app = options.app || 'n8n';
+					const refererUrl = options.refererUrl || '';
+					const title = options.title || '';
+					const desc = options.desc || '';
+					const collectionId = options.collectionId || '';
 
 					const response = await this.helpers.request({
 						method: 'POST',
@@ -156,8 +158,10 @@ export class Gyazo implements INodeType {
 					});
 				} else if (operation === 'search') {
 					const query = this.getNodeParameter('query', i) as string;
-					const page = this.getNodeParameter('page', i, 1) as number;
-					const per = this.getNodeParameter('per', i, 20) as number;
+					const options = this.getNodeParameter('options', i, {}) as any;
+					const pagination = options.pagination || {};
+					const page = pagination.page || 1;
+					const per = pagination.per || 20;
 
 					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
 						method: 'GET',

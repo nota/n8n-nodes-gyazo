@@ -91,83 +91,101 @@ const searchOperation: INodeProperties[] = [
 		description: 'Search query for images',
 	},
 	{
-		displayName: 'Page',
-		name: 'page',
-		type: 'number',
-		default: 1,
+		displayName: 'Options',
+		name: 'options',
+		type: 'fixedCollection',
+		placeholder: 'Add Fields',
+		default: {},
 		displayOptions: {
 			show: {
 				resource: ['image'],
 				operation: ['search'],
 			},
 		},
-		routing: {
-			send: {
-				type: 'query',
-				property: 'page',
+		options: [
+			{
+				name: 'pagination',
+				displayName: 'Pagination',
+				values: [
+					{
+						displayName: 'Page',
+						name: 'page',
+						type: 'number',
+						default: 1,
+						routing: {
+							send: {
+								type: 'query',
+								property: 'page',
+							},
+						},
+						description: 'Page number for pagination',
+					},
+					{
+						displayName: 'Per Page',
+						name: 'per',
+						type: 'number',
+						default: 20,
+						routing: {
+							send: {
+								type: 'query',
+								property: 'per',
+							},
+						},
+						description: 'Number of results per page (max 100)',
+					},
+				],
 			},
-		},
-		description: 'Page number for pagination',
-	},
-	{
-		displayName: 'Per Page',
-		name: 'per',
-		type: 'number',
-		default: 20,
-		displayOptions: {
-			show: {
-				resource: ['image'],
-				operation: ['search'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'query',
-				property: 'per',
-			},
-		},
-		description: 'Number of results per page (max 100)',
+		],
 	},
 ];
 
 const listOperation: INodeProperties[] = [
 	{
-		displayName: 'Page',
-		name: 'page',
-		type: 'number',
-		default: 1,
+		displayName: 'Options',
+		name: 'options',
+		type: 'fixedCollection',
+		placeholder: 'Add Fields',
+		default: {},
 		displayOptions: {
 			show: {
 				resource: ['image'],
 				operation: ['list'],
 			},
 		},
-		routing: {
-			send: {
-				type: 'query',
-				property: 'page',
+		options: [
+			{
+				name: 'pagination',
+				displayName: 'Pagination',
+				values: [
+					{
+						displayName: 'Page',
+						name: 'page',
+						type: 'number',
+						default: 1,
+						routing: {
+							send: {
+								type: 'query',
+								property: 'page',
+							},
+						},
+						description: 'Page number for pagination',
+					},
+					{
+						displayName: 'Per Page',
+						name: 'per',
+						type: 'number',
+						default: 20,
+						routing: {
+							send: {
+								type: 'query',
+								property: 'per_page',
+							},
+						},
+						description: 'Number of results per page (max 100)',
+					},
+				],
 			},
-		},
-		description: 'Page number for pagination',
-	},
-	{
-		displayName: 'Per Page',
-		name: 'per',
-		type: 'number',
-		default: 20,
-		displayOptions: {
-			show: {
-				resource: ['image'],
-				operation: ['list'],
-			},
-		},
-		routing: {
-			send: {
-				type: 'query',
-				property: 'per_page',
-			},
-		},
-		description: 'Number of results per page (max 100)',
+		],
 	},
 ];
 
@@ -245,7 +263,7 @@ const uploadOperation: INodeProperties[] = [
 		displayName: 'Options',
 		name: 'options',
 		type: 'fixedCollection',
-		placeholder: 'Add Option',
+		placeholder: 'Add Fields',
 		default: {},
 		displayOptions: {
 			show: {
@@ -253,74 +271,41 @@ const uploadOperation: INodeProperties[] = [
 				operation: ['upload'],
 			},
 		},
-		typeOptions: {
-			multipleValues: false,
-		},
 		options: [
 			{
-				name: 'app',
 				displayName: 'App Name',
-				values: [
-					{
-						displayName: 'App Name',
-						name: 'app',
-						type: 'string',
-						default: 'n8n',
-						description: 'Application name',
-					},
-				],
+				name: 'app',
+				type: 'string',
+				default: 'n8n',
+				description: 'Application name',
 			},
 			{
-				name: 'refererUrl',
-				displayName: 'Referer URL',
-				values: [
-					{
-						displayName: 'Referer URL',
-						name: 'refererUrl',
-						type: 'string',
-						default: '',
-						description: 'Referer site URL',
-					},
-				],
-			},
-			{
-				name: 'title',
-				displayName: 'Title',
-				values: [
-					{
-						displayName: 'Title',
-						name: 'title',
-						type: 'string',
-						default: '',
-						description: 'Title for the image',
-					},
-				],
-			},
-			{
-				name: 'desc',
-				displayName: 'Description',
-				values: [
-					{
-						displayName: 'Description',
-						name: 'desc',
-						type: 'string',
-						default: '',
-						description: 'Description for the image',
-					},
-				],
-			},
-			{
-				name: 'collectionId',
 				displayName: 'Collection ID',
-				values: [
-					{
-						displayName: 'Collection ID',
-						name: 'collectionId',
-						type: 'string',
-						default: '',
-						description: 'Collection ID to add image to',
-					},
-				],
+				name: 'collectionId',
+				type: 'string',
+				default: '',
+				description: 'Collection ID to add image to',
+			},
+			{
+				displayName: 'Description',
+				name: 'desc',
+				type: 'string',
+				default: '',
+				description: 'Description for the image',
+			},
+			{
+				displayName: 'Referer URL',
+				name: 'refererUrl',
+				type: 'string',
+				default: '',
+				description: 'Referer site URL',
+			},
+			{
+				displayName: 'Title',
+				name: 'title',
+				type: 'string',
+				default: '',
+				description: 'Title for the image',
 			},
 		],
 	},
