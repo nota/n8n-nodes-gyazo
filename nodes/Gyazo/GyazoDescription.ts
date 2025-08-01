@@ -102,9 +102,6 @@ const searchOperation: INodeProperties[] = [
 				operation: ['search'],
 			},
 		},
-		typeOptions: {
-			multipleValues: false,
-		},
 		options: [
 			{
 				name: 'pagination',
@@ -154,9 +151,6 @@ const listOperation: INodeProperties[] = [
 				resource: ['image'],
 				operation: ['list'],
 			},
-		},
-		typeOptions: {
-			multipleValues: false,
 		},
 		options: [
 			{
