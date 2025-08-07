@@ -76,15 +76,19 @@ export class Gyazo implements INodeType {
 								const page = pagination.page || 1;
 								const per = pagination.per || 20;
 
-								const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
-									method: 'GET',
-									url: 'https://api.gyazo.com/api/images',
-									qs: {
-										page,
-										per_page: per,
+								const response = await this.helpers.httpRequestWithAuthentication.call(
+									this,
+									'gyazoApi',
+									{
+										method: 'GET',
+										url: 'https://api.gyazo.com/api/images',
+										qs: {
+											page,
+											per_page: per,
+										},
+										json: true,
 									},
-									json: true,
-								});
+								);
 
 								returnData.push({
 									json: response,
@@ -115,11 +119,15 @@ export class Gyazo implements INodeType {
 									});
 								}
 
-								const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
-									method: 'GET',
-									url: `https://api.gyazo.com/api/images/${imageId}`,
-									json: true,
-								});
+								const response = await this.helpers.httpRequestWithAuthentication.call(
+									this,
+									'gyazoApi',
+									{
+										method: 'GET',
+										url: `https://api.gyazo.com/api/images/${imageId}`,
+										json: true,
+									},
+								);
 
 								returnData.push({
 									json: response,
@@ -180,16 +188,20 @@ export class Gyazo implements INodeType {
 								const page = pagination.page || 1;
 								const per = pagination.per || 20;
 
-								const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
-									method: 'GET',
-									url: 'https://api.gyazo.com/api/search',
-									qs: {
-										query,
-										page,
-										per,
+								const response = await this.helpers.httpRequestWithAuthentication.call(
+									this,
+									'gyazoApi',
+									{
+										method: 'GET',
+										url: 'https://api.gyazo.com/api/search',
+										qs: {
+											query,
+											page,
+											per,
+										},
+										json: true,
 									},
-									json: true,
-								});
+								);
 
 								returnData.push({
 									json: response,
@@ -199,9 +211,13 @@ export class Gyazo implements INodeType {
 							}
 
 							default:
-								throw new NodeOperationError(this.getNode(), `Unknown image operation: ${operation}`, {
-									itemIndex: i,
-								});
+								throw new NodeOperationError(
+									this.getNode(),
+									`Unknown image operation: ${operation}`,
+									{
+										itemIndex: i,
+									},
+								);
 						}
 						break;
 
@@ -212,9 +228,17 @@ export class Gyazo implements INodeType {
 								let collectionId: string;
 
 								if (collectionIdResource.mode === 'url') {
-									const match = collectionIdResource.value.match(/https:\/\/gyazo\.com\/collections\/([a-f0-9]{32})/);
+									const match = collectionIdResource.value.match(
+										/https:\/\/gyazo\.com\/collections\/([a-f0-9]{32})/,
+									);
 									if (!match) {
-										throw new NodeOperationError(this.getNode(), 'Invalid Collection URL format');
+										throw new NodeOperationError(
+											this.getNode(),
+											`Invalid Collection URL format: ${collectionIdResource.value}`,
+											{
+												itemIndex: i,
+											},
+										);
 									}
 									collectionId = match[1];
 								} else {
@@ -230,12 +254,16 @@ export class Gyazo implements INodeType {
 									per_page: per,
 								};
 
-								const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
-									method: 'GET',
-									url: `https://api.gyazo.com/api/v2/collections/${collectionId}/images`,
-									qs: queryParams,
-									json: true,
-								});
+								const response = await this.helpers.httpRequestWithAuthentication.call(
+									this,
+									'gyazoApi',
+									{
+										method: 'GET',
+										url: `https://api.gyazo.com/api/v2/collections/${collectionId}/images`,
+										qs: queryParams,
+										json: true,
+									},
+								);
 
 								returnData.push({
 									json: response,
@@ -245,9 +273,13 @@ export class Gyazo implements INodeType {
 							}
 
 							default:
-								throw new NodeOperationError(this.getNode(), `Unknown collection operation: ${operation}`, {
-									itemIndex: i,
-								});
+								throw new NodeOperationError(
+									this.getNode(),
+									`Unknown collection operation: ${operation}`,
+									{
+										itemIndex: i,
+									},
+								);
 						}
 						break;
 
