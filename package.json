@@ -3,7 +3,11 @@
 	"version": "0.1.0",
 	"description": "n8n community nodes for Gyazo integration",
 	"keywords": [
-		"n8n-community-node-package"
+		"n8n-community-node-package",
+		"n8n-nodes",
+		"gyazo",
+		"image",
+		"upload"
 	],
 	"license": "MIT",
 	"homepage": "",
