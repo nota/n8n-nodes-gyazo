@@ -67,6 +67,32 @@ export const gyazoOperations: INodeProperties[] = [
 		],
 		default: 'search',
 	},
+	{
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+			},
+		},
+		options: [
+			{
+				name: 'Get Collection Images',
+				value: 'getCollectionImages',
+				description: 'Get images from a specific collection',
+				action: 'Get collection images',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/api/v2/collections/{{$parameter["collectionId"]}}/images',
+					},
+				},
+			},
+		],
+		default: 'getCollectionImages',
+	},
 ];
 
 const searchOperation: INodeProperties[] = [
@@ -311,9 +337,98 @@ const uploadOperation: INodeProperties[] = [
 	},
 ];
 
+const getCollectionImagesOperation: INodeProperties[] = [
+	{
+		displayName: 'Collection',
+		name: 'collectionId',
+		type: 'resourceLocator',
+		default: { mode: 'id', value: '' },
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+				operation: ['getCollectionImages'],
+			},
+		},
+		modes: [
+			{
+				displayName: 'ID',
+				name: 'id',
+				type: 'string',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: '^[a-f0-9]{32}$',
+							errorMessage: 'Collection ID must be a 32-character hexadecimal string',
+						},
+					},
+				],
+				placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
+			},
+			{
+				displayName: 'URL',
+				name: 'url',
+				type: 'string',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: 'https://gyazo\\.com/collections/([a-f0-9]{32})',
+							errorMessage: 'Collection URL must be in the format: https://gyazo.com/collections/{id}',
+						},
+					},
+				],
+				placeholder: 'https://gyazo.com/collections/ab1234cd5678ef9012ab3456cd7890ef',
+			},
+		],
+		description: 'The collection to retrieve images from',
+	},
+	{
+		displayName: 'Options',
+		name: 'options',
+		type: 'fixedCollection',
+		placeholder: 'Add Fields',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+				operation: ['getCollectionImages'],
+			},
+		},
+		options: [
+			{
+				name: 'pagination',
+				displayName: 'Pagination',
+				values: [
+					{
+						displayName: 'Page',
+						name: 'page',
+						type: 'number',
+						default: 1,
+						description: 'Page number for pagination',
+					},
+					{
+						displayName: 'Per Page',
+						name: 'per',
+						type: 'number',
+						default: 20,
+						description: 'Number of results per page (max 100)',
+						typeOptions: {
+							minValue: 1,
+							maxValue: 100,
+						},
+					},
+				],
+			},
+		],
+	},
+];
+
 export const gyazoFields: INodeProperties[] = [
 	...searchOperation,
 	...listOperation,
 	...getOperation,
 	...uploadOperation,
+	...getCollectionImagesOperation,
 ];
