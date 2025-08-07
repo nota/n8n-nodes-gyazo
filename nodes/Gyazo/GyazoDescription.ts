@@ -414,6 +414,10 @@ const getCollectionImagesOperation: INodeProperties[] = [
 						type: 'number',
 						default: 20,
 						description: 'Number of results per page (max 100)',
+						typeOptions: {
+							minValue: 1,
+							maxValue: 100,
+						},
 					},
 				],
 			},
