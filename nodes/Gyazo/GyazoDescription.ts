@@ -79,16 +79,22 @@ export const gyazoOperations: INodeProperties[] = [
 		},
 		options: [
 			{
+				name: 'Get',
+				value: 'get',
+				description: 'Get a specific collection by ID',
+				action: 'Get a collection',
+			},
+			{
+				name: 'Create',
+				value: 'create',
+				description: 'Create a new collection',
+				action: 'Create a collection',
+			},
+			{
 				name: 'Get Collection Images',
 				value: 'getCollectionImages',
 				description: 'Get images from a specific collection',
 				action: 'Get collection images',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/api/v2/collections/{{$parameter["collectionId"]}}/images',
-					},
-				},
 			},
 		],
 		default: 'getCollectionImages',
@@ -375,7 +381,8 @@ const getCollectionImagesOperation: INodeProperties[] = [
 						type: 'regex',
 						properties: {
 							regex: 'https://gyazo\\.com/collections/([a-f0-9]{32})',
-							errorMessage: 'Collection URL must be in the format: https://gyazo.com/collections/{id}',
+							errorMessage:
+								'Collection URL must be in the format: https://gyazo.com/collections/{id}',
 						},
 					},
 				],
@@ -425,10 +432,111 @@ const getCollectionImagesOperation: INodeProperties[] = [
 	},
 ];
 
+const getCollectionOperation: INodeProperties[] = [
+	{
+		displayName: 'Collection',
+		name: 'collectionId',
+		type: 'resourceLocator',
+		default: { mode: 'id', value: '' },
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+				operation: ['get'],
+			},
+		},
+		modes: [
+			{
+				displayName: 'ID',
+				name: 'id',
+				type: 'string',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: '^[a-f0-9]{32}$',
+							errorMessage: 'Collection ID must be a 32-character hexadecimal string',
+						},
+					},
+				],
+				placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
+			},
+			{
+				displayName: 'URL',
+				name: 'url',
+				type: 'string',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: 'https://gyazo\\.com/collections/([a-f0-9]{32})',
+							errorMessage:
+								'Collection URL must be in the format: https://gyazo.com/collections/{id}',
+						},
+					},
+				],
+				placeholder: 'https://gyazo.com/collections/ab1234cd5678ef9012ab3456cd7890ef',
+			},
+		],
+		description: 'The collection to retrieve',
+	},
+];
+
+const createCollectionOperation: INodeProperties[] = [
+	{
+		displayName: 'Name',
+		name: 'name',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+				operation: ['create'],
+			},
+		},
+		description:
+			'Name of the collection. Note: The "collection" scope is required. If you add the "collection" scope to your application\'s permissions, you must regenerate access token for the new scope to take effect.',
+	},
+	{
+		displayName: 'Options',
+		name: 'options',
+		type: 'fixedCollection',
+		placeholder: 'Add Fields',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+				operation: ['create'],
+			},
+		},
+		options: [
+			{
+				name: 'imageIds',
+				displayName: 'Image IDs',
+				values: [
+					{
+						displayName: 'Image IDs',
+						name: 'image_ids',
+						type: 'string',
+						typeOptions: {
+							multipleValues: true,
+						},
+						default: [],
+						description: 'Array of image IDs to add to the collection',
+						placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
+					},
+				],
+			},
+		],
+	},
+];
+
 export const gyazoFields: INodeProperties[] = [
 	...searchOperation,
 	...listOperation,
 	...getOperation,
 	...uploadOperation,
+	...getCollectionOperation,
+	...createCollectionOperation,
 	...getCollectionImagesOperation,
 ];
