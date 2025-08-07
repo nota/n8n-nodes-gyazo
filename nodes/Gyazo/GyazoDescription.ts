@@ -488,7 +488,6 @@ const createCollectionOperation: INodeProperties[] = [
 		name: 'name',
 		type: 'string',
 		default: '',
-		placeholder: new Date().toISOString().split('T')[0],
 		displayOptions: {
 			show: {
 				resource: ['collection'],
