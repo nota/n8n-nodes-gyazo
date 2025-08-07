@@ -386,9 +386,9 @@ const getCollectionImagesOperation: INodeProperties[] = [
 					{
 						displayName: 'Timestamp',
 						name: 'timestamp',
-						type: 'string',
+						type: 'dateTime',
 						default: '',
-						description: 'Unix timestamp to filter images created before this time',
+						description: 'Date and time to filter images created before this time',
 					},
 				],
 			},

@@ -221,7 +221,8 @@ export class Gyazo implements INodeType {
 								};
 
 								if (timestamp) {
-									queryParams.timestamp = timestamp;
+									const unixTimestamp = Math.floor(new Date(timestamp).getTime() / 1000);
+									queryParams.timestamp = unixTimestamp;
 								}
 
 								const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
