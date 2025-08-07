@@ -83,36 +83,18 @@ export const gyazoOperations: INodeProperties[] = [
 				value: 'get',
 				description: 'Get a specific collection by ID',
 				action: 'Get a collection',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/api/v2/collections/{{$parameter["collectionId"]}}',
-					},
-				},
 			},
 			{
 				name: 'Create',
 				value: 'create',
 				description: 'Create a new collection',
 				action: 'Create a collection',
-				routing: {
-					request: {
-						method: 'POST',
-						url: '/api/v2/collections',
-					},
-				},
 			},
 			{
 				name: 'Get Collection Images',
 				value: 'getCollectionImages',
 				description: 'Get images from a specific collection',
 				action: 'Get collection images',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/api/v2/collections/{{$parameter["collectionId"]}}/images',
-					},
-				},
 			},
 		],
 		default: 'getCollectionImages',
@@ -511,7 +493,7 @@ const createCollectionOperation: INodeProperties[] = [
 				operation: ['create'],
 			},
 		},
-		description: 'Name of the collection. Note: collectionスコープが必要です。追加後、アクセストークンを再生成する必要があります.',
+		description: 'Name of the collection. Note: Collection scope is required. You need to regenerate the access token after adding it.',
 	},
 	{
 		displayName: 'Options',
