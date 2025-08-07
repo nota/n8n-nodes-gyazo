@@ -364,7 +364,7 @@ const getCollectionImagesOperation: INodeProperties[] = [
 						},
 					},
 				],
-				placeholder: 'e9e1760dadcff80a56f556d98726448e',
+				placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
 			},
 			{
 				displayName: 'URL',
@@ -379,7 +379,7 @@ const getCollectionImagesOperation: INodeProperties[] = [
 						},
 					},
 				],
-				placeholder: 'https://gyazo.com/collections/e9e1760dadcff80a56f556d98726448e',
+				placeholder: 'https://gyazo.com/collections/ab1234cd5678ef9012ab3456cd7890ef',
 			},
 		],
 		description: 'The collection to retrieve images from',
