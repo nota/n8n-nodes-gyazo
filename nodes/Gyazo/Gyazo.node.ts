@@ -46,6 +46,10 @@ export class Gyazo implements INodeType {
 						name: 'Image',
 						value: 'image',
 					},
+					{
+						name: 'Collection',
+						value: 'collection',
+					},
 				],
 				default: 'image',
 			},
@@ -60,9 +64,10 @@ export class Gyazo implements INodeType {
 
 		for (let i = 0; i < items.length; i++) {
 			try {
+				const resource = this.getNodeParameter('resource', i) as string;
 				const operation = this.getNodeParameter('operation', i) as string;
 
-				if (operation === 'list') {
+				if (resource === 'image' && operation === 'list') {
 					const options = this.getNodeParameter('options', i, {}) as any;
 					const pagination = options.pagination || {};
 					const page = pagination.page || 1;
@@ -82,7 +87,7 @@ export class Gyazo implements INodeType {
 						json: response,
 						pairedItem: { item: i },
 					});
-				} else if (operation === 'get') {
+				} else if (resource === 'image' && operation === 'get') {
 					const image = this.getNodeParameter('image', i) as { mode: string; value: string };
 					let imageId: string;
 
@@ -114,7 +119,7 @@ export class Gyazo implements INodeType {
 						json: response,
 						pairedItem: { item: i },
 					});
-				} else if (operation === 'upload') {
+				} else if (resource === 'image' && operation === 'upload') {
 					const credentials = await this.getCredentials('gyazoApi');
 					const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i) as string;
 
@@ -156,7 +161,7 @@ export class Gyazo implements INodeType {
 						json: response,
 						pairedItem: { item: i },
 					});
-				} else if (operation === 'search') {
+				} else if (resource === 'image' && operation === 'search') {
 					const query = this.getNodeParameter('query', i) as string;
 					const options = this.getNodeParameter('options', i, {}) as any;
 					const pagination = options.pagination || {};
@@ -171,6 +176,34 @@ export class Gyazo implements INodeType {
 							page,
 							per,
 						},
+						json: true,
+					});
+
+					returnData.push({
+						json: response,
+						pairedItem: { item: i },
+					});
+				} else if (resource === 'collection' && operation === 'getCollectionImages') {
+					const collectionId = this.getNodeParameter('collectionId', i) as string;
+					const options = this.getNodeParameter('options', i, {}) as any;
+					const pagination = options.pagination || {};
+					const page = pagination.page || 1;
+					const per = pagination.per || 20;
+					const since = pagination.since || '';
+
+					const queryParams: any = {
+						page,
+						per_page: per,
+					};
+
+					if (since) {
+						queryParams.since = since;
+					}
+
+					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
+						method: 'GET',
+						url: `https://api.gyazo.com/api/v2/collections/${collectionId}/images`,
+						qs: queryParams,
 						json: true,
 					});
 

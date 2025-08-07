@@ -67,6 +67,32 @@ export const gyazoOperations: INodeProperties[] = [
 		],
 		default: 'search',
 	},
+	{
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+			},
+		},
+		options: [
+			{
+				name: 'Get Collection Images',
+				value: 'getCollectionImages',
+				description: 'Get images from a specific collection',
+				action: 'Get collection images',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/api/v2/collections/{{$parameter["collectionId"]}}/images',
+					},
+				},
+			},
+		],
+		default: 'getCollectionImages',
+	},
 ];
 
 const searchOperation: INodeProperties[] = [
@@ -311,9 +337,69 @@ const uploadOperation: INodeProperties[] = [
 	},
 ];
 
+const getCollectionImagesOperation: INodeProperties[] = [
+	{
+		displayName: 'Collection ID',
+		name: 'collectionId',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+				operation: ['getCollectionImages'],
+			},
+		},
+		description: 'The ID of the collection to retrieve images from',
+	},
+	{
+		displayName: 'Options',
+		name: 'options',
+		type: 'fixedCollection',
+		placeholder: 'Add Fields',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+				operation: ['getCollectionImages'],
+			},
+		},
+		options: [
+			{
+				name: 'pagination',
+				displayName: 'Pagination',
+				values: [
+					{
+						displayName: 'Page',
+						name: 'page',
+						type: 'number',
+						default: 1,
+						description: 'Page number for pagination',
+					},
+					{
+						displayName: 'Per Page',
+						name: 'per',
+						type: 'number',
+						default: 20,
+						description: 'Number of results per page (max 100)',
+					},
+					{
+						displayName: 'Since',
+						name: 'since',
+						type: 'string',
+						default: '',
+						description: 'Timestamp to filter images created after this time',
+					},
+				],
+			},
+		],
+	},
+];
+
 export const gyazoFields: INodeProperties[] = [
 	...searchOperation,
 	...listOperation,
 	...getOperation,
 	...uploadOperation,
+	...getCollectionImagesOperation,
 ];
