@@ -263,13 +263,15 @@ export class Gyazo implements INodeType {
 							}
 
 							case 'create': {
-								const name = this.getNodeParameter('name', i) as string;
+								const name = this.getNodeParameter('name', i, '') as string;
 								const options = this.getNodeParameter('options', i, {}) as any;
 								const imageIds = options.imageIds?.image_ids || [];
 
-								const requestBody: any = {
-									name,
-								};
+								const requestBody: any = {};
+
+								if (name) {
+									requestBody.name = name;
+								}
 
 								if (imageIds.length > 0) {
 									requestBody.image_ids = imageIds;

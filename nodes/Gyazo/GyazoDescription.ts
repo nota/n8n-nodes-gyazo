@@ -486,7 +486,6 @@ const createCollectionOperation: INodeProperties[] = [
 		name: 'name',
 		type: 'string',
 		default: '',
-		required: true,
 		displayOptions: {
 			show: {
 				resource: ['collection'],
