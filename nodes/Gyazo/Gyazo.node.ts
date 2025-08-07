@@ -189,15 +189,15 @@ export class Gyazo implements INodeType {
 					const pagination = options.pagination || {};
 					const page = pagination.page || 1;
 					const per = pagination.per || 20;
-					const since = pagination.since || '';
+					const timestamp = pagination.timestamp || '';
 
 					const queryParams: any = {
 						page,
 						per_page: per,
 					};
 
-					if (since) {
-						queryParams.since = since;
+					if (timestamp) {
+						queryParams.timestamp = timestamp;
 					}
 
 					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
