@@ -381,7 +381,8 @@ const getCollectionImagesOperation: INodeProperties[] = [
 						type: 'regex',
 						properties: {
 							regex: 'https://gyazo\\.com/collections/([a-f0-9]{32})',
-							errorMessage: 'Collection URL must be in the format: https://gyazo.com/collections/{id}',
+							errorMessage:
+								'Collection URL must be in the format: https://gyazo.com/collections/{id}',
 						},
 					},
 				],
@@ -469,7 +470,8 @@ const getCollectionOperation: INodeProperties[] = [
 						type: 'regex',
 						properties: {
 							regex: 'https://gyazo\\.com/collections/([a-f0-9]{32})',
-							errorMessage: 'Collection URL must be in the format: https://gyazo.com/collections/{id}',
+							errorMessage:
+								'Collection URL must be in the format: https://gyazo.com/collections/{id}',
 						},
 					},
 				],
@@ -486,14 +488,15 @@ const createCollectionOperation: INodeProperties[] = [
 		name: 'name',
 		type: 'string',
 		default: '',
-		placeholder: '={{new Date().toISOString().split("T")[0]}}',
+		placeholder: new Date().toISOString().split('T')[0],
 		displayOptions: {
 			show: {
 				resource: ['collection'],
 				operation: ['create'],
 			},
 		},
-		description: 'Name of the collection. Note: Collection scope is required. You need to regenerate the access token after adding it.',
+		description:
+			'Name of the collection. Note: Collection scope is required. You need to regenerate the access token after adding it.',
 	},
 	{
 		displayName: 'Options',
