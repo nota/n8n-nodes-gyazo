@@ -495,7 +495,7 @@ const createCollectionOperation: INodeProperties[] = [
 			},
 		},
 		description:
-			'Name of the collection. Note: Collection scope is required. You need to regenerate the access token after adding it.',
+			'Name of the collection. Note: The "collection" scope is required. If you add the "collection" scope to your application\'s permissions, you must regenerate access token for the new scope to take effect.',
 	},
 	{
 		displayName: 'Options',
