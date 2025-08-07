@@ -383,13 +383,6 @@ const getCollectionImagesOperation: INodeProperties[] = [
 						default: 20,
 						description: 'Number of results per page (max 100)',
 					},
-					{
-						displayName: 'Timestamp',
-						name: 'timestamp',
-						type: 'dateTime',
-						default: '',
-						description: 'Date and time to filter images created before this time',
-					},
 				],
 			},
 		],

@@ -213,17 +213,11 @@ export class Gyazo implements INodeType {
 								const pagination = options.pagination || {};
 								const page = pagination.page || 1;
 								const per = pagination.per || 20;
-								const timestamp = pagination.timestamp || '';
 
 								const queryParams: any = {
 									page,
 									per_page: per,
 								};
-
-								if (timestamp) {
-									const unixTimestamp = Math.floor(new Date(timestamp).getTime() / 1000);
-									queryParams.timestamp = unixTimestamp;
-								}
 
 								const response = await this.helpers.httpRequestWithAuthentication.call(this, 'gyazoApi', {
 									method: 'GET',
