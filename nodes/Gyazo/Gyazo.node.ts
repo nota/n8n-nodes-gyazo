@@ -208,7 +208,18 @@ export class Gyazo implements INodeType {
 					case 'collection':
 						switch (operation) {
 							case 'getCollectionImages': {
-								const collectionId = this.getNodeParameter('collectionId', i) as string;
+								const collectionIdResource = this.getNodeParameter('collectionId', i) as any;
+								let collectionId: string;
+
+								if (collectionIdResource.mode === 'url') {
+									const match = collectionIdResource.value.match(/https:\/\/gyazo\.com\/collections\/([a-f0-9]{32})/);
+									if (!match) {
+										throw new NodeOperationError(this.getNode(), 'Invalid Collection URL format');
+									}
+									collectionId = match[1];
+								} else {
+									collectionId = collectionIdResource.value;
+								}
 								const options = this.getNodeParameter('options', i, {}) as any;
 								const pagination = options.pagination || {};
 								const page = pagination.page || 1;

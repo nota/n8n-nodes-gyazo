@@ -339,10 +339,10 @@ const uploadOperation: INodeProperties[] = [
 
 const getCollectionImagesOperation: INodeProperties[] = [
 	{
-		displayName: 'Collection ID',
+		displayName: 'Collection',
 		name: 'collectionId',
-		type: 'string',
-		default: '',
+		type: 'resourceLocator',
+		default: { mode: 'id', value: '' },
 		required: true,
 		displayOptions: {
 			show: {
@@ -350,7 +350,39 @@ const getCollectionImagesOperation: INodeProperties[] = [
 				operation: ['getCollectionImages'],
 			},
 		},
-		description: 'The ID of the collection to retrieve images from',
+		modes: [
+			{
+				displayName: 'ID',
+				name: 'id',
+				type: 'string',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: '^[a-f0-9]{32}$',
+							errorMessage: 'Collection ID must be a 32-character hexadecimal string',
+						},
+					},
+				],
+				placeholder: 'e9e1760dadcff80a56f556d98726448e',
+			},
+			{
+				displayName: 'URL',
+				name: 'url',
+				type: 'string',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: 'https://gyazo\\.com/collections/([a-f0-9]{32})',
+							errorMessage: 'Collection URL must be in the format: https://gyazo.com/collections/{id}',
+						},
+					},
+				],
+				placeholder: 'https://gyazo.com/collections/e9e1760dadcff80a56f556d98726448e',
+			},
+		],
+		description: 'The collection to retrieve images from',
 	},
 	{
 		displayName: 'Options',
