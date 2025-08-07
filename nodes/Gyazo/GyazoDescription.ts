@@ -511,7 +511,7 @@ const createCollectionOperation: INodeProperties[] = [
 				operation: ['create'],
 			},
 		},
-		description: 'Name of the collection. Note: collectionスコープが必要です。追加後、アクセストークンを再生成する必要があります。',
+		description: 'Name of the collection. Note: collectionスコープが必要です。追加後、アクセストークンを再生成する必要があります.',
 	},
 	{
 		displayName: 'Options',
