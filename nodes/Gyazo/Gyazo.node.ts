@@ -223,6 +223,76 @@ export class Gyazo implements INodeType {
 
 					case 'collection':
 						switch (operation) {
+							case 'get': {
+								const collectionIdResource = this.getNodeParameter('collectionId', i) as any;
+								let collectionId: string;
+
+								if (collectionIdResource.mode === 'url') {
+									const match = collectionIdResource.value.match(
+										/https:\/\/gyazo\.com\/collections\/([a-f0-9]{32})/,
+									);
+									if (!match) {
+										throw new NodeOperationError(
+											this.getNode(),
+											`Invalid Collection URL format: ${collectionIdResource.value}`,
+											{
+												itemIndex: i,
+											},
+										);
+									}
+									collectionId = match[1];
+								} else {
+									collectionId = collectionIdResource.value;
+								}
+
+								const response = await this.helpers.httpRequestWithAuthentication.call(
+									this,
+									'gyazoApi',
+									{
+										method: 'GET',
+										url: `https://api.gyazo.com/api/v2/collections/${collectionId}`,
+										json: true,
+									},
+								);
+
+								returnData.push({
+									json: response,
+									pairedItem: { item: i },
+								});
+								break;
+							}
+
+							case 'create': {
+								const name = this.getNodeParameter('name', i) as string;
+								const options = this.getNodeParameter('options', i, {}) as any;
+								const imageIds = options.imageIds?.image_ids || [];
+
+								const requestBody: any = {
+									name,
+								};
+
+								if (imageIds.length > 0) {
+									requestBody.image_ids = imageIds;
+								}
+
+								const response = await this.helpers.httpRequestWithAuthentication.call(
+									this,
+									'gyazoApi',
+									{
+										method: 'POST',
+										url: 'https://api.gyazo.com/api/v2/collections',
+										body: requestBody,
+										json: true,
+									},
+								);
+
+								returnData.push({
+									json: response,
+									pairedItem: { item: i },
+								});
+								break;
+							}
+
 							case 'getCollectionImages': {
 								const collectionIdResource = this.getNodeParameter('collectionId', i) as any;
 								let collectionId: string;

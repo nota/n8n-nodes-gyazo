@@ -79,6 +79,30 @@ export const gyazoOperations: INodeProperties[] = [
 		},
 		options: [
 			{
+				name: 'Get',
+				value: 'get',
+				description: 'Get a specific collection by ID',
+				action: 'Get a collection',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/api/v2/collections/{{$parameter["collectionId"]}}',
+					},
+				},
+			},
+			{
+				name: 'Create',
+				value: 'create',
+				description: 'Create a new collection',
+				action: 'Create a collection',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '/api/v2/collections',
+					},
+				},
+			},
+			{
 				name: 'Get Collection Images',
 				value: 'getCollectionImages',
 				description: 'Get images from a specific collection',
@@ -425,10 +449,110 @@ const getCollectionImagesOperation: INodeProperties[] = [
 	},
 ];
 
+const getCollectionOperation: INodeProperties[] = [
+	{
+		displayName: 'Collection',
+		name: 'collectionId',
+		type: 'resourceLocator',
+		default: { mode: 'id', value: '' },
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+				operation: ['get'],
+			},
+		},
+		modes: [
+			{
+				displayName: 'ID',
+				name: 'id',
+				type: 'string',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: '^[a-f0-9]{32}$',
+							errorMessage: 'Collection ID must be a 32-character hexadecimal string',
+						},
+					},
+				],
+				placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
+			},
+			{
+				displayName: 'URL',
+				name: 'url',
+				type: 'string',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: 'https://gyazo\\.com/collections/([a-f0-9]{32})',
+							errorMessage: 'Collection URL must be in the format: https://gyazo.com/collections/{id}',
+						},
+					},
+				],
+				placeholder: 'https://gyazo.com/collections/ab1234cd5678ef9012ab3456cd7890ef',
+			},
+		],
+		description: 'The collection to retrieve',
+	},
+];
+
+const createCollectionOperation: INodeProperties[] = [
+	{
+		displayName: 'Name',
+		name: 'name',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+				operation: ['create'],
+			},
+		},
+		description: 'Name of the collection',
+	},
+	{
+		displayName: 'Options',
+		name: 'options',
+		type: 'fixedCollection',
+		placeholder: 'Add Fields',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['collection'],
+				operation: ['create'],
+			},
+		},
+		options: [
+			{
+				name: 'imageIds',
+				displayName: 'Image IDs',
+				values: [
+					{
+						displayName: 'Image IDs',
+						name: 'image_ids',
+						type: 'string',
+						typeOptions: {
+							multipleValues: true,
+						},
+						default: [],
+						description: 'Array of image IDs to add to the collection',
+						placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
+					},
+				],
+			},
+		],
+	},
+];
+
 export const gyazoFields: INodeProperties[] = [
 	...searchOperation,
 	...listOperation,
 	...getOperation,
 	...uploadOperation,
+	...getCollectionOperation,
+	...createCollectionOperation,
 	...getCollectionImagesOperation,
 ];
