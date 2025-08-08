@@ -94,10 +94,10 @@ Get a list of user's saved images with pagination support.
 ```json
 [
   {
-    "image_id": "abc123def456",
-    "permalink_url": "https://gyazo.com/abc123def456",
-    "thumb_url": "https://thumb.gyazo.com/thumb/200/_abc123def456.png",
-    "url": "https://i.gyazo.com/abc123def456.png",
+    "image_id": "abc123def456789012345678901234ef",
+    "permalink_url": "https://gyazo.com/abc123def456789012345678901234ef",
+    "thumb_url": "https://thumb.gyazo.com/thumb/200/_abc123def456789012345678901234ef.png",
+    "url": "https://i.gyazo.com/abc123def456789012345678901234ef.png",
     "type": "png",
     "created_at": "2024-01-15T10:30:00+0000"
   }
@@ -155,10 +155,10 @@ Upload an image to Gyazo.
 **Example output:**
 ```json
 {
-  "image_id": "new123image456id",
-  "permalink_url": "https://gyazo.com/new123image456id",
-  "thumb_url": "https://thumb.gyazo.com/thumb/200/_new123image456id.png",
-  "url": "https://i.gyazo.com/new123image456id.png",
+  "image_id": "def456abc123789012345678901234ef",
+  "permalink_url": "https://gyazo.com/def456abc123789012345678901234ef",
+  "thumb_url": "https://thumb.gyazo.com/thumb/200/_def456abc123789012345678901234ef.png",
+  "url": "https://i.gyazo.com/def456abc123789012345678901234ef.png",
   "type": "png",
   "created_at": "2024-01-15T11:00:00+0000"
 }
@@ -172,7 +172,7 @@ Retrieve a specific collection by ID or URL.
 **Parameters:**
 - **Collection**: Resource locator supporting:
   - **ID**: 32-character hexadecimal string
-  - **URL**: Full Gyazo collection URL (e.g., `https://gyazo.com/collections/abc123def456`)
+  - **URL**: Full Gyazo collection URL (e.g., `https://gyazo.com/collections/abc123def456789012345678901234ef`)
 
 #### Create
 Create a new collection.
