@@ -6,24 +6,47 @@ This is an n8n community node that integrates [Gyazo](https://gyazo.com) with yo
 
 ## Table of contents
 
-* [Installation on self hosted instance](#installation-self-hosted)
-* [Installation on n8n cloud](#installation-on-n8n-cloud)
-* [Installation for development and contributing](#installation-for-development-and-contributing)
-* [Operations](#operations)
-* [Credentials](#credentials)
-* [Compatibility](#compatibility)
-* [Usage](#usage)
-* [Resources](#resources)
-* [Release](#release)
-* [Version History](#version-history)
-* [Troubleshooting](#troubleshooting)
+- [n8n Nodes - Gyazo integration](#n8n-nodes---gyazo-integration)
+  - [Table of contents](#table-of-contents)
+  - [Installation (self-hosted)](#installation-self-hosted)
+  - [Installation on n8n cloud](#installation-on-n8n-cloud)
+  - [Installation for development and contributing](#installation-for-development-and-contributing)
+  - [Operations](#operations)
+    - [Image Operations](#image-operations)
+      - [List](#list)
+      - [Get](#get)
+      - [Search](#search)
+      - [Upload](#upload)
+    - [Collection Operations](#collection-operations)
+      - [Get](#get-1)
+      - [Create](#create)
+      - [Get Collection Images](#get-collection-images)
+  - [Credentials](#credentials)
+    - [Setting up Gyazo API Access](#setting-up-gyazo-api-access)
+    - [Configuring credentials in n8n](#configuring-credentials-in-n8n)
+  - [Compatibility](#compatibility)
+  - [Usage](#usage)
+    - [Basic Image Upload Workflow](#basic-image-upload-workflow)
+    - [Search and Process Images](#search-and-process-images)
+    - [Collection Management](#collection-management)
+  - [Resources](#resources)
+  - [Release](#release)
+    - [Publishing to npm](#publishing-to-npm)
+  - [Version History](#version-history)
+  - [Troubleshooting](#troubleshooting)
+    - [Authentication Issues](#authentication-issues)
+    - [Invalid Resource Format](#invalid-resource-format)
+    - [Upload Issues](#upload-issues)
+    - [Rate Limiting](#rate-limiting)
+    - [Node Not Appearing](#node-not-appearing)
+  - [License](#license)
 
 ## Installation (self-hosted)
 
 For self-hosted n8n instances, you can install this community node by following these steps:
 
 1. Go to **Settings > Community Nodes** in your n8n instance
-2. Select **Install** 
+2. Select **Install**
 3. Enter `n8n-nodes-gyazo` in the npm Package Name field
 4. Agree to the risks of using community nodes: select **I understand the risks of installing unverified code from a public source**
 5. Select **Install**
@@ -46,27 +69,32 @@ n8n cloud will automatically restart and register the community node.
 To install this node for development:
 
 1. Clone this repository:
+
    ```bash
    git clone https://github.com/nota/n8n-nodes-gyazo.git
    cd n8n-nodes-gyazo
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Build the node:
+
    ```bash
    npm run build
    ```
 
 4. Link the node locally:
+
    ```bash
    npm link
    ```
 
 5. Install the node into your local n8n instance:
+
    ```bash
    # In your n8n custom nodes directory (usually ~/.n8n/custom/)
    npm link n8n-nodes-gyazo
@@ -84,67 +112,78 @@ The Gyazo node supports two main resources: **Image** and **Collection**.
 ### Image Operations
 
 #### List
+
 Get a list of user's saved images with pagination support.
 
 **Parameters:**
+
 - **Page** (optional): Page number for pagination (default: 1)
 - **Per Page** (optional): Number of results per page, max 100 (default: 20)
 
 **Example output:**
+
 ```json
 [
-  {
-    "image_id": "abc123def456789012345678901234ef",
-    "permalink_url": "https://gyazo.com/abc123def456789012345678901234ef",
-    "thumb_url": "https://thumb.gyazo.com/thumb/200/_abc123def456789012345678901234ef.png",
-    "url": "https://i.gyazo.com/abc123def456789012345678901234ef.png",
-    "type": "png",
-    "created_at": "2024-01-15T10:30:00+0000"
-  }
+	{
+		"image_id": "abc123def456789012345678901234ef",
+		"permalink_url": "https://gyazo.com/abc123def456789012345678901234ef",
+		"thumb_url": "https://thumb.gyazo.com/thumb/200/_abc123def456789012345678901234ef.png",
+		"url": "https://i.gyazo.com/abc123def456789012345678901234ef.png",
+		"type": "png",
+		"created_at": "2024-01-15T10:30:00+0000"
+	}
 ]
 ```
 
 #### Get
+
 Retrieve a specific image by ID or URL.
 
 **Parameters:**
+
 - **Image**: Resource locator supporting:
   - **By ID**: 32-character hexadecimal string (e.g., `abc123def456789012345678901234ef`)
   - **By URL**: Full Gyazo URL (e.g., `https://gyazo.com/abc123def456789012345678901234ef`)
 
 **Example output:**
+
 ```json
 {
-   "image_id": "abc123def456789012345678901234ef",
-   "type": "png",
-  "created_at": "2024-01-15T10:30:00+0000",
-  "permalink_url": "https://gyazo.com/abc123def456789012345678901234ef",
-  "thumb_url": "https://thumb.gyazo.com/thumb/200/_abc123def456789012345678901234ef.png",
-  "url": "https://i.gyazo.com/abc123def456789012345678901234ef.png",
-  "metadata": {
-    "app": "n8n",
-    "title": "Screenshot",
-    "desc": "Automated screenshot"
-  }
+	"image_id": "abc123def456789012345678901234ef",
+	"type": "png",
+	"created_at": "2024-01-15T10:30:00+0000",
+	"permalink_url": "https://gyazo.com/abc123def456789012345678901234ef",
+	"thumb_url": "https://thumb.gyazo.com/thumb/200/_abc123def456789012345678901234ef.png",
+	"url": "https://i.gyazo.com/abc123def456789012345678901234ef.png",
+	"metadata": {
+		"app": "n8n",
+		"title": "Screenshot",
+		"desc": "Automated screenshot"
+	}
 }
 ```
 
 #### Search
+
 Search for images using a query string with pagination support.
 
 **Parameters:**
+
 - **Query** (required): Search query for images
 - **Page** (optional): Page number for pagination (default: 1)
 - **Per Page** (optional): Number of results per page, max 100 (default: 20)
 
 **Example usage:**
+
 - Query: `"workflow diagram"`
 - Results: Images matching the search term
 
 #### Upload
+
 Upload an image to Gyazo.
 
 **Parameters:**
+
 - **Image Binary** (required): Name of the binary property containing image data (default: `data`)
 - **App Name** (optional): Application name (default: `n8n`)
 - **Collection ID** (optional): Collection ID to add image to
@@ -153,40 +192,47 @@ Upload an image to Gyazo.
 - **Title** (optional): Title for the image
 
 **Example output:**
+
 ```json
 {
-   "type": "png",
-  "thumb_url": "https://thumb.gyazo.com/thumb/200/_def456abc123789012345678901234ef.png",
-  "created_at": "2024-01-15T11:00:00+0000",
-  "image_id": "def456abc123789012345678901234ef",
-  "permalink_url": "https://gyazo.com/def456abc123789012345678901234ef",
-  "url": "https://i.gyazo.com/def456abc123789012345678901234ef.png"
+	"type": "png",
+	"thumb_url": "https://thumb.gyazo.com/thumb/200/_def456abc123789012345678901234ef.png",
+	"created_at": "2024-01-15T11:00:00+0000",
+	"image_id": "def456abc123789012345678901234ef",
+	"permalink_url": "https://gyazo.com/def456abc123789012345678901234ef",
+	"url": "https://i.gyazo.com/def456abc123789012345678901234ef.png"
 }
 ```
 
 ### Collection Operations
 
 #### Get
+
 Retrieve a specific collection by ID or URL.
 
 **Parameters:**
+
 - **Collection**: Resource locator supporting:
   - **ID**: 32-character hexadecimal string
   - **URL**: Full Gyazo collection URL (e.g., `https://gyazo.com/collections/abc123def456789012345678901234ef`)
 
 #### Create
+
 Create a new collection.
 
 **Parameters:**
+
 - **Name** (optional): Name of the collection
 - **Image IDs** (optional): Array of image IDs to add to the collection
 
 **Note:** The "collection" scope is required in your Gyazo API application permissions. You must regenerate your access token after adding this scope.
 
 #### Get Collection Images
+
 Retrieve images from a specific collection with pagination support.
 
 **Parameters:**
+
 - **Collection**: Resource locator (ID or URL)
 - **Page** (optional): Page number for pagination (default: 1)
 - **Per Page** (optional): Number of results per page, max 100 (default: 20)
@@ -219,6 +265,7 @@ The node will automatically use Bearer token authentication for all API requests
 ## Compatibility
 
 This node is compatible with:
+
 - **n8n version**: 1.0.0 and above
 - **Node.js version**: 22.0.0 and above
 
@@ -282,6 +329,7 @@ To publish a new version:
 **Problem**: "Unauthorized" or "Invalid access token" errors
 
 **Solution**:
+
 - Verify your access token is correct and hasn't expired
 - Ensure your Gyazo application has the necessary scopes
 - For collection operations, regenerate your access token after adding the "collection" scope
@@ -291,6 +339,7 @@ To publish a new version:
 **Problem**: "Invalid Image ID format" or "Invalid Gyazo URL format" errors
 
 **Solution**:
+
 - Image IDs must be 32-character hexadecimal strings
 - Gyazo URLs must follow the format: `https://gyazo.com/{image_id}`
 - Collection URLs must follow: `https://gyazo.com/collections/{collection_id}`
@@ -300,6 +349,7 @@ To publish a new version:
 **Problem**: Image upload fails or returns errors
 
 **Solution**:
+
 - Ensure the binary property contains valid image data
 - Check that the binary property name matches the configured parameter
 - Verify the image format is supported by Gyazo (PNG, JPEG, GIF)
@@ -309,6 +359,7 @@ To publish a new version:
 **Problem**: "Too Many Requests" errors
 
 **Solution**:
+
 - Implement delays between requests using n8n's Wait node
 - Reduce the number of concurrent requests
 - Check Gyazo API rate limits in their documentation
@@ -318,6 +369,7 @@ To publish a new version:
 **Problem**: Gyazo node doesn't appear in n8n after installation
 
 **Solution**:
+
 - Restart your n8n instance after installing the community node
 - Check that the installation completed successfully
 - Verify the node appears in Settings > Community Nodes
