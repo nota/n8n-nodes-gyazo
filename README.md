@@ -378,4 +378,4 @@ For additional support, please check the [GitHub repository](https://github.com/
 
 ## License
 
-[MIT](LICENSE.md)
+[GPL-3.0](LICENSE.md)
