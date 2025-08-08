@@ -2,7 +2,7 @@
 
 This is an n8n community node that integrates [Gyazo](https://gyazo.com) with your n8n workflows, so you can run Gyazo operations, manage images, and automate image sharing tasks.
 
-[Gyazo](https://gyazo.com) is a platform for developers to capture, share, and manage screenshots and images, while [n8n](https://n8n.io) is a fair-code licensed tool for AI workflow automation that allows you to connect various services.
+[Gyazo](https://gyazo.com) serves an API platform for developers to capture, share, and manage screenshots and images, while [n8n](https://n8n.io) is a fair-code licensed tool for AI workflow automation that allows you to connect various services.
 
 ## Table of contents
 
@@ -202,7 +202,6 @@ To use this node, you need to configure Gyazo API credentials:
    - Go to [Gyazo API Applications](https://gyazo.com/oauth/applications)
    - Click "Register new application"
    - Fill in your application details
-   - Note the **Client ID** and **Client Secret**
 3. **Generate an access token**:
    - Use the OAuth flow or generate a personal access token
    - For collection operations, ensure your application has the "collection" scope
