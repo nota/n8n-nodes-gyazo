@@ -115,12 +115,12 @@ Retrieve a specific image by ID or URL.
 **Example output:**
 ```json
 {
-  "image_id": "abc123def456789012345678901234ef",
+   "image_id": "abc123def456789012345678901234ef",
+   "type": "png",
+  "created_at": "2024-01-15T10:30:00+0000",
   "permalink_url": "https://gyazo.com/abc123def456789012345678901234ef",
   "thumb_url": "https://thumb.gyazo.com/thumb/200/_abc123def456789012345678901234ef.png",
   "url": "https://i.gyazo.com/abc123def456789012345678901234ef.png",
-  "type": "png",
-  "created_at": "2024-01-15T10:30:00+0000",
   "metadata": {
     "app": "n8n",
     "title": "Screenshot",
@@ -155,12 +155,12 @@ Upload an image to Gyazo.
 **Example output:**
 ```json
 {
+   "type": "png",
+  "thumb_url": "https://thumb.gyazo.com/thumb/200/_def456abc123789012345678901234ef.png",
+  "created_at": "2024-01-15T11:00:00+0000",
   "image_id": "def456abc123789012345678901234ef",
   "permalink_url": "https://gyazo.com/def456abc123789012345678901234ef",
-  "thumb_url": "https://thumb.gyazo.com/thumb/200/_def456abc123789012345678901234ef.png",
-  "url": "https://i.gyazo.com/def456abc123789012345678901234ef.png",
-  "type": "png",
-  "created_at": "2024-01-15T11:00:00+0000"
+  "url": "https://i.gyazo.com/def456abc123789012345678901234ef.png"
 }
 ```
 
