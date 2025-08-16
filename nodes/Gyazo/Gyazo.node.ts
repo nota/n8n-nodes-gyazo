@@ -36,23 +36,6 @@ export class Gyazo implements INodeType {
 			},
 		},
 		properties: [
-			{
-				displayName: 'Resource',
-				name: 'resource',
-				type: 'options',
-				noDataExpression: true,
-				options: [
-					{
-						name: 'Image',
-						value: 'image',
-					},
-					{
-						name: 'Collection',
-						value: 'collection',
-					},
-				],
-				default: 'image',
-			},
 			...gyazoOperations,
 			...gyazoFields,
 		],
