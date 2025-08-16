@@ -2,6 +2,24 @@ import { INodeProperties } from 'n8n-workflow';
 
 export const gyazoOperations: INodeProperties[] = [
 	{
+		displayName: 'Resource',
+		name: 'resource',
+		type: 'options',
+		noDataExpression: true,
+		options: [
+			{
+				name: 'Image',
+				value: 'image',
+			},
+			// Collection operations are not publicly available (important-comment)
+			// {
+			// 	name: 'Collection',
+			// 	value: 'collection',
+			// },
+		],
+		default: 'image',
+	},
+	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
@@ -39,7 +57,7 @@ export const gyazoOperations: INodeProperties[] = [
 			{
 				name: 'Search',
 				value: 'search',
-				description: 'Search for images',
+				description: 'Search for images (Pro users only - see https://gyazo.com/api/docs/search)',
 				action: 'Search for images',
 				routing: {
 					request: {
@@ -67,38 +85,39 @@ export const gyazoOperations: INodeProperties[] = [
 		],
 		default: 'search',
 	},
-	{
-		displayName: 'Operation',
-		name: 'operation',
-		type: 'options',
-		noDataExpression: true,
-		displayOptions: {
-			show: {
-				resource: ['collection'],
-			},
-		},
-		options: [
-			{
-				name: 'Get',
-				value: 'get',
-				description: 'Get a specific collection by ID',
-				action: 'Get a collection',
-			},
-			{
-				name: 'Create',
-				value: 'create',
-				description: 'Create a new collection',
-				action: 'Create a collection',
-			},
-			{
-				name: 'Get Collection Images',
-				value: 'getCollectionImages',
-				description: 'Get images from a specific collection',
-				action: 'Get collection images',
-			},
-		],
-		default: 'getCollectionImages',
-	},
+	// Collection operations are not publicly available (important-comment)
+	// {
+	// 	displayName: 'Operation',
+	// 	name: 'operation',
+	// 	type: 'options',
+	// 	noDataExpression: true,
+	// 	displayOptions: {
+	// 		show: {
+	// 			resource: ['collection'],
+	// 		},
+	// 	},
+	// 	options: [
+	// 		{
+	// 			name: 'Get',
+	// 			value: 'get',
+	// 			description: 'Get a specific collection by ID',
+	// 			action: 'Get a collection',
+	// 		},
+	// 		{
+	// 			name: 'Create',
+	// 			value: 'create',
+	// 			description: 'Create a new collection',
+	// 			action: 'Create a collection',
+	// 		},
+	// 		{
+	// 			name: 'Get Collection Images',
+	// 			value: 'getCollectionImages',
+	// 			description: 'Get images from a specific collection',
+	// 			action: 'Get collection images',
+	// 		},
+	// 	],
+	// 	default: 'getCollectionImages',
+	// },
 ];
 
 const searchOperation: INodeProperties[] = [
@@ -108,6 +127,9 @@ const searchOperation: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		required: true,
+		typeOptions: {
+			maxLength: 200,
+		},
 		displayOptions: {
 			show: {
 				resource: ['image'],
@@ -120,7 +142,7 @@ const searchOperation: INodeProperties[] = [
 				property: 'query',
 			},
 		},
-		description: 'Search query for images',
+		description: 'Search query for images (max 200 characters)',
 	},
 	{
 		displayName: 'Options',
@@ -157,6 +179,10 @@ const searchOperation: INodeProperties[] = [
 						name: 'per',
 						type: 'number',
 						default: 20,
+						typeOptions: {
+							minValue: 1,
+							maxValue: 100,
+						},
 						routing: {
 							send: {
 								type: 'query',
@@ -207,6 +233,10 @@ const listOperation: INodeProperties[] = [
 						name: 'per',
 						type: 'number',
 						default: 20,
+						typeOptions: {
+							minValue: 1,
+							maxValue: 100,
+						},
 						routing: {
 							send: {
 								type: 'query',
@@ -343,200 +373,202 @@ const uploadOperation: INodeProperties[] = [
 	},
 ];
 
-const getCollectionImagesOperation: INodeProperties[] = [
-	{
-		displayName: 'Collection',
-		name: 'collectionId',
-		type: 'resourceLocator',
-		default: { mode: 'id', value: '' },
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['collection'],
-				operation: ['getCollectionImages'],
-			},
-		},
-		modes: [
-			{
-				displayName: 'ID',
-				name: 'id',
-				type: 'string',
-				validation: [
-					{
-						type: 'regex',
-						properties: {
-							regex: '^[a-f0-9]{32}$',
-							errorMessage: 'Collection ID must be a 32-character hexadecimal string',
-						},
-					},
-				],
-				placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
-			},
-			{
-				displayName: 'URL',
-				name: 'url',
-				type: 'string',
-				validation: [
-					{
-						type: 'regex',
-						properties: {
-							regex: 'https://gyazo\\.com/collections/([a-f0-9]{32})',
-							errorMessage:
-								'Collection URL must be in the format: https://gyazo.com/collections/{id}',
-						},
-					},
-				],
-				placeholder: 'https://gyazo.com/collections/ab1234cd5678ef9012ab3456cd7890ef',
-			},
-		],
-		description: 'The collection to retrieve images from',
-	},
-	{
-		displayName: 'Options',
-		name: 'options',
-		type: 'fixedCollection',
-		placeholder: 'Add Fields',
-		default: {},
-		displayOptions: {
-			show: {
-				resource: ['collection'],
-				operation: ['getCollectionImages'],
-			},
-		},
-		options: [
-			{
-				name: 'pagination',
-				displayName: 'Pagination',
-				values: [
-					{
-						displayName: 'Page',
-						name: 'page',
-						type: 'number',
-						default: 1,
-						description: 'Page number for pagination',
-					},
-					{
-						displayName: 'Per Page',
-						name: 'per',
-						type: 'number',
-						default: 20,
-						description: 'Number of results per page (max 100)',
-						typeOptions: {
-							minValue: 1,
-							maxValue: 100,
-						},
-					},
-				],
-			},
-		],
-	},
-];
+// Collection operations are not publicly available (important-comment)
+// const getCollectionImagesOperation: INodeProperties[] = [
+// 	{
+// 		displayName: 'Collection',
+// 		name: 'collectionId',
+// 		type: 'resourceLocator',
+// 		default: { mode: 'id', value: '' },
+// 		required: true,
+// 		displayOptions: {
+// 			show: {
+// 				resource: ['collection'],
+// 				operation: ['getCollectionImages'],
+// 			},
+// 		},
+// 		modes: [
+// 			{
+// 				displayName: 'ID',
+// 				name: 'id',
+// 				type: 'string',
+// 				validation: [
+// 					{
+// 						type: 'regex',
+// 						properties: {
+// 							regex: '^[a-f0-9]{32}$',
+// 							errorMessage: 'Collection ID must be a 32-character hexadecimal string',
+// 						},
+// 					},
+// 				],
+// 				placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
+// 			},
+// 			{
+// 				displayName: 'URL',
+// 				name: 'url',
+// 				type: 'string',
+// 				validation: [
+// 					{
+// 						type: 'regex',
+// 						properties: {
+// 							regex: 'https://gyazo\\.com/collections/([a-f0-9]{32})',
+// 							errorMessage:
+// 								'Collection URL must be in the format: https://gyazo.com/collections/{id}',
+// 						},
+// 					},
+// 				],
+// 				placeholder: 'https://gyazo.com/collections/ab1234cd5678ef9012ab3456cd7890ef',
+// 			},
+// 		],
+// 		description: 'The collection to retrieve images from',
+// 	},
+// 	{
+// 		displayName: 'Options',
+// 		name: 'options',
+// 		type: 'fixedCollection',
+// 		placeholder: 'Add Fields',
+// 		default: {},
+// 		displayOptions: {
+// 			show: {
+// 				resource: ['collection'],
+// 				operation: ['getCollectionImages'],
+// 			},
+// 		},
+// 		options: [
+// 			{
+// 				name: 'pagination',
+// 				displayName: 'Pagination',
+// 				values: [
+// 					{
+// 						displayName: 'Page',
+// 						name: 'page',
+// 						type: 'number',
+// 						default: 1,
+// 						description: 'Page number for pagination',
+// 					},
+// 					{
+// 						displayName: 'Per Page',
+// 						name: 'per',
+// 						type: 'number',
+// 						default: 20,
+// 						description: 'Number of results per page (max 100)',
+// 						typeOptions: {
+// 							minValue: 1,
+// 							maxValue: 100,
+// 						},
+// 					},
+// 				],
+// 			},
+// 		],
+// 	},
+// ];
 
-const getCollectionOperation: INodeProperties[] = [
-	{
-		displayName: 'Collection',
-		name: 'collectionId',
-		type: 'resourceLocator',
-		default: { mode: 'id', value: '' },
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['collection'],
-				operation: ['get'],
-			},
-		},
-		modes: [
-			{
-				displayName: 'ID',
-				name: 'id',
-				type: 'string',
-				validation: [
-					{
-						type: 'regex',
-						properties: {
-							regex: '^[a-f0-9]{32}$',
-							errorMessage: 'Collection ID must be a 32-character hexadecimal string',
-						},
-					},
-				],
-				placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
-			},
-			{
-				displayName: 'URL',
-				name: 'url',
-				type: 'string',
-				validation: [
-					{
-						type: 'regex',
-						properties: {
-							regex: 'https://gyazo\\.com/collections/([a-f0-9]{32})',
-							errorMessage:
-								'Collection URL must be in the format: https://gyazo.com/collections/{id}',
-						},
-					},
-				],
-				placeholder: 'https://gyazo.com/collections/ab1234cd5678ef9012ab3456cd7890ef',
-			},
-		],
-		description: 'The collection to retrieve',
-	},
-];
+// const getCollectionOperation: INodeProperties[] = [
+// 	{
+// 		displayName: 'Collection',
+// 		name: 'collectionId',
+// 		type: 'resourceLocator',
+// 		default: { mode: 'id', value: '' },
+// 		required: true,
+// 		displayOptions: {
+// 			show: {
+// 				resource: ['collection'],
+// 				operation: ['get'],
+// 			},
+// 		},
+// 		modes: [
+// 			{
+// 				displayName: 'ID',
+// 				name: 'id',
+// 				type: 'string',
+// 				validation: [
+// 					{
+// 						type: 'regex',
+// 						properties: {
+// 							regex: '^[a-f0-9]{32}$',
+// 							errorMessage: 'Collection ID must be a 32-character hexadecimal string',
+// 						},
+// 					},
+// 				],
+// 				placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
+// 			},
+// 			{
+// 				displayName: 'URL',
+// 				name: 'url',
+// 				type: 'string',
+// 				validation: [
+// 					{
+// 						type: 'regex',
+// 						properties: {
+// 							regex: 'https://gyazo\\.com/collections/([a-f0-9]{32})',
+// 							errorMessage:
+// 								'Collection URL must be in the format: https://gyazo.com/collections/{id}',
+// 						},
+// 					},
+// 				],
+// 				placeholder: 'https://gyazo.com/collections/ab1234cd5678ef9012ab3456cd7890ef',
+// 			},
+// 		],
+// 		description: 'The collection to retrieve',
+// 	},
+// ];
 
-const createCollectionOperation: INodeProperties[] = [
-	{
-		displayName: 'Name',
-		name: 'name',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['collection'],
-				operation: ['create'],
-			},
-		},
-		description:
-			'Name of the collection. Note: The "collection" scope is required. If you add the "collection" scope to your application\'s permissions, you must regenerate access token for the new scope to take effect.',
-	},
-	{
-		displayName: 'Options',
-		name: 'options',
-		type: 'fixedCollection',
-		placeholder: 'Add Fields',
-		default: {},
-		displayOptions: {
-			show: {
-				resource: ['collection'],
-				operation: ['create'],
-			},
-		},
-		options: [
-			{
-				name: 'imageIds',
-				displayName: 'Image IDs',
-				values: [
-					{
-						displayName: 'Image IDs',
-						name: 'image_ids',
-						type: 'string',
-						typeOptions: {
-							multipleValues: true,
-						},
-						default: [],
-						description: 'Array of image IDs to add to the collection',
-						placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
-					},
-				],
-			},
-		],
-	},
-];
+// const createCollectionOperation: INodeProperties[] = [
+// 	{
+// 		displayName: 'Name',
+// 		name: 'name',
+// 		type: 'string',
+// 		default: '',
+// 		displayOptions: {
+// 			show: {
+// 				resource: ['collection'],
+// 				operation: ['create'],
+// 			},
+// 		},
+// 		description:
+// 			'Name of the collection. Note: The "collection" scope is required. If you add the "collection" scope to your application\'s permissions, you must regenerate access token for the new scope to take effect.',
+// 	},
+// 	{
+// 		displayName: 'Options',
+// 		name: 'options',
+// 		type: 'fixedCollection',
+// 		placeholder: 'Add Fields',
+// 		default: {},
+// 		displayOptions: {
+// 			show: {
+// 				resource: ['collection'],
+// 				operation: ['create'],
+// 			},
+// 		},
+// 		options: [
+// 			{
+// 				name: 'imageIds',
+// 				displayName: 'Image IDs',
+// 				values: [
+// 					{
+// 						displayName: 'Image IDs',
+// 						name: 'image_ids',
+// 						type: 'string',
+// 						typeOptions: {
+// 							multipleValues: true,
+// 						},
+// 						default: [],
+// 						description: 'Array of image IDs to add to the collection',
+// 						placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
+// 					},
+// 				],
+// 			},
+// 		],
+// 	},
+// ];
 
 export const gyazoFields: INodeProperties[] = [
 	...searchOperation,
 	...listOperation,
 	...getOperation,
 	...uploadOperation,
-	...getCollectionOperation,
-	...createCollectionOperation,
-	...getCollectionImagesOperation,
+	// Collection operations are not publicly available (important-comment)
+	// ...getCollectionOperation,
+	// ...createCollectionOperation,
+	// ...getCollectionImagesOperation,
 ];

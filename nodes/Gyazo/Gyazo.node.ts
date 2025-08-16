@@ -221,139 +221,140 @@ export class Gyazo implements INodeType {
 						}
 						break;
 
-					case 'collection':
-						switch (operation) {
-							case 'get': {
-								const collectionIdResource = this.getNodeParameter('collectionId', i) as any;
-								let collectionId: string;
-
-								if (collectionIdResource.mode === 'url') {
-									const match = collectionIdResource.value.match(
-										/https:\/\/gyazo\.com\/collections\/([a-f0-9]{32})/,
-									);
-									if (!match) {
-										throw new NodeOperationError(
-											this.getNode(),
-											`Invalid Collection URL format: ${collectionIdResource.value}`,
-											{
-												itemIndex: i,
-											},
-										);
-									}
-									collectionId = match[1];
-								} else {
-									collectionId = collectionIdResource.value;
-								}
-
-								const response = await this.helpers.httpRequestWithAuthentication.call(
-									this,
-									'gyazoApi',
-									{
-										method: 'GET',
-										url: `https://api.gyazo.com/api/v2/collections/${collectionId}`,
-										json: true,
-									},
-								);
-
-								returnData.push({
-									json: response,
-									pairedItem: { item: i },
-								});
-								break;
-							}
-
-							case 'create': {
-								const name = this.getNodeParameter('name', i, '') as string;
-								const options = this.getNodeParameter('options', i, {}) as any;
-								const imageIds = options.imageIds?.image_ids || [];
-
-								const requestBody: any = {};
-
-								if (name) {
-									requestBody.name = name;
-								}
-
-								if (imageIds.length > 0) {
-									requestBody.image_ids = imageIds;
-								}
-
-								const response = await this.helpers.httpRequestWithAuthentication.call(
-									this,
-									'gyazoApi',
-									{
-										method: 'POST',
-										url: 'https://api.gyazo.com/api/v2/collections',
-										body: requestBody,
-										json: true,
-									},
-								);
-
-								returnData.push({
-									json: response,
-									pairedItem: { item: i },
-								});
-								break;
-							}
-
-							case 'getCollectionImages': {
-								const collectionIdResource = this.getNodeParameter('collectionId', i) as any;
-								let collectionId: string;
-
-								if (collectionIdResource.mode === 'url') {
-									const match = collectionIdResource.value.match(
-										/https:\/\/gyazo\.com\/collections\/([a-f0-9]{32})/,
-									);
-									if (!match) {
-										throw new NodeOperationError(
-											this.getNode(),
-											`Invalid Collection URL format: ${collectionIdResource.value}`,
-											{
-												itemIndex: i,
-											},
-										);
-									}
-									collectionId = match[1];
-								} else {
-									collectionId = collectionIdResource.value;
-								}
-								const options = this.getNodeParameter('options', i, {}) as any;
-								const pagination = options.pagination || {};
-								const page = pagination.page || 1;
-								const per = pagination.per || 20;
-
-								const queryParams: any = {
-									page,
-									per_page: per,
-								};
-
-								const response = await this.helpers.httpRequestWithAuthentication.call(
-									this,
-									'gyazoApi',
-									{
-										method: 'GET',
-										url: `https://api.gyazo.com/api/v2/collections/${collectionId}/images`,
-										qs: queryParams,
-										json: true,
-									},
-								);
-
-								returnData.push({
-									json: response,
-									pairedItem: { item: i },
-								});
-								break;
-							}
-
-							default:
-								throw new NodeOperationError(
-									this.getNode(),
-									`Unknown collection operation: ${operation}`,
-									{
-										itemIndex: i,
-									},
-								);
-						}
-						break;
+					// Collection operations are not publicly available
+					// case 'collection':
+					// 	switch (operation) {
+					// 		case 'get': {
+					// 			const collectionIdResource = this.getNodeParameter('collectionId', i) as any;
+					// 			let collectionId: string;
+					// 
+					// 			if (collectionIdResource.mode === 'url') {
+					// 				const match = collectionIdResource.value.match(
+					// 					/https:\/\/gyazo\.com\/collections\/([a-f0-9]{32})/,
+					// 				);
+					// 				if (!match) {
+					// 					throw new NodeOperationError(
+					// 						this.getNode(),
+					// 						`Invalid Collection URL format: ${collectionIdResource.value}`,
+					// 						{
+					// 							itemIndex: i,
+					// 						},
+					// 					);
+					// 				}
+					// 				collectionId = match[1];
+					// 			} else {
+					// 				collectionId = collectionIdResource.value;
+					// 			}
+					// 
+					// 			const response = await this.helpers.httpRequestWithAuthentication.call(
+					// 				this,
+					// 				'gyazoApi',
+					// 				{
+					// 					method: 'GET',
+					// 					url: `https://api.gyazo.com/api/v2/collections/${collectionId}`,
+					// 					json: true,
+					// 				},
+					// 			);
+					// 
+					// 			returnData.push({
+					// 				json: response,
+					// 				pairedItem: { item: i },
+					// 			});
+					// 			break;
+					// 		}
+					// 
+					// 		case 'create': {
+					// 			const name = this.getNodeParameter('name', i, '') as string;
+					// 			const options = this.getNodeParameter('options', i, {}) as any;
+					// 			const imageIds = options.imageIds?.image_ids || [];
+					// 
+					// 			const requestBody: any = {};
+					// 
+					// 			if (name) {
+					// 				requestBody.name = name;
+					// 			}
+					// 
+					// 			if (imageIds.length > 0) {
+					// 				requestBody.image_ids = imageIds;
+					// 			}
+					// 
+					// 			const response = await this.helpers.httpRequestWithAuthentication.call(
+					// 				this,
+					// 				'gyazoApi',
+					// 				{
+					// 					method: 'POST',
+					// 					url: 'https://api.gyazo.com/api/v2/collections',
+					// 					body: requestBody,
+					// 					json: true,
+					// 				},
+					// 			);
+					// 
+					// 			returnData.push({
+					// 				json: response,
+					// 				pairedItem: { item: i },
+					// 			});
+					// 			break;
+					// 		}
+					// 
+					// 		case 'getCollectionImages': {
+					// 			const collectionIdResource = this.getNodeParameter('collectionId', i) as any;
+					// 			let collectionId: string;
+					// 
+					// 			if (collectionIdResource.mode === 'url') {
+					// 				const match = collectionIdResource.value.match(
+					// 					/https:\/\/gyazo\.com\/collections\/([a-f0-9]{32})/,
+					// 				);
+					// 				if (!match) {
+					// 					throw new NodeOperationError(
+					// 						this.getNode(),
+					// 						`Invalid Collection URL format: ${collectionIdResource.value}`,
+					// 						{
+					// 							itemIndex: i,
+					// 						},
+					// 					);
+					// 				}
+					// 				collectionId = match[1];
+					// 			} else {
+					// 				collectionId = collectionIdResource.value;
+					// 			}
+					// 			const options = this.getNodeParameter('options', i, {}) as any;
+					// 			const pagination = options.pagination || {};
+					// 			const page = pagination.page || 1;
+					// 			const per = pagination.per || 20;
+					// 
+					// 			const queryParams: any = {
+					// 				page,
+					// 				per_page: per,
+					// 			};
+					// 
+					// 			const response = await this.helpers.httpRequestWithAuthentication.call(
+					// 				this,
+					// 				'gyazoApi',
+					// 				{
+					// 					method: 'GET',
+					// 					url: `https://api.gyazo.com/api/v2/collections/${collectionId}/images`,
+					// 					qs: queryParams,
+					// 					json: true,
+					// 				},
+					// 			);
+					// 
+					// 			returnData.push({
+					// 				json: response,
+					// 				pairedItem: { item: i },
+					// 			});
+					// 			break;
+					// 		}
+					// 
+					// 		default:
+					// 			throw new NodeOperationError(
+					// 				this.getNode(),
+					// 				`Unknown collection operation: ${operation}`,
+					// 				{
+					// 					itemIndex: i,
+					// 				},
+					// 			);
+					// 	}
+					// 	break;
 
 					default:
 						throw new NodeOperationError(this.getNode(), `Unknown resource: ${resource}`, {
