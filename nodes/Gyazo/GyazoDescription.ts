@@ -11,7 +11,7 @@ export const gyazoOperations: INodeProperties[] = [
 				name: 'Image',
 				value: 'image',
 			},
-			// Collection operations are not publicly available (important-comment)
+			// TODO: Collection operations are not publicly available
 			// {
 			// 	name: 'Collection',
 			// 	value: 'collection',
@@ -86,7 +86,7 @@ export const gyazoOperations: INodeProperties[] = [
 		],
 		default: 'search',
 	},
-	// Collection operations are not publicly available (important-comment)
+	// TODO: Collection operations are not publicly available
 	// {
 	// 	displayName: 'Operation',
 	// 	name: 'operation',
@@ -375,7 +375,7 @@ const uploadOperation: INodeProperties[] = [
 	},
 ];
 
-// Collection operations are not publicly available (important-comment)
+// TODO: Collection operations are not publicly available
 // const getCollectionImagesOperation: INodeProperties[] = [
 // 	{
 // 		displayName: 'Collection',
@@ -569,7 +569,7 @@ export const gyazoFields: INodeProperties[] = [
 	...listOperation,
 	...getOperation,
 	...uploadOperation,
-	// Collection operations are not publicly available (important-comment)
+	// TODO: Collection operations are not publicly available
 	// ...getCollectionOperation,
 	// ...createCollectionOperation,
 	// ...getCollectionImagesOperation,
