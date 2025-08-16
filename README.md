@@ -307,7 +307,7 @@ This node is compatible with:
 
 ## Release
 
-This package follows semantic versioning. Current version: **0.1.0**
+This package follows semantic versioning. Current version: **0.2.0**
 
 ### Publishing to npm
 
@@ -320,6 +320,7 @@ To publish a new version:
 
 ## Version History
 
+- **0.2.0** - Removed support for collection operations, including get collection images
 - **0.1.0** - Initial release with image and collection operations
 
 ## Troubleshooting
