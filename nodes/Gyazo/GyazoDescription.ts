@@ -11,7 +11,7 @@ export const gyazoOperations: INodeProperties[] = [
 				name: 'Image',
 				value: 'image',
 			},
-			// Collection operations are not publicly available (important-comment)
+			// TODO: Collection operations are not publicly available
 			// {
 			// 	name: 'Collection',
 			// 	value: 'collection',
@@ -57,7 +57,8 @@ export const gyazoOperations: INodeProperties[] = [
 			{
 				name: 'Search',
 				value: 'search',
-				description: 'Search for images (Pro users only - see https://gyazo.com/api/docs/search)',
+				description:
+					'Search for images (Pro users only – see the Gyazo API Search documentation: https://gyazo.com/api/docs/search)',
 				action: 'Search for images',
 				routing: {
 					request: {
@@ -85,7 +86,7 @@ export const gyazoOperations: INodeProperties[] = [
 		],
 		default: 'search',
 	},
-	// Collection operations are not publicly available (important-comment)
+	// TODO: Collection operations are not publicly available
 	// {
 	// 	displayName: 'Operation',
 	// 	name: 'operation',
@@ -128,6 +129,7 @@ const searchOperation: INodeProperties[] = [
 		default: '',
 		required: true,
 		typeOptions: {
+			// The maxLength constraint comes from the Gyazo API specification (see https://gyazo.com/api/docs/search)
 			maxLength: 200,
 		},
 		displayOptions: {
@@ -373,7 +375,7 @@ const uploadOperation: INodeProperties[] = [
 	},
 ];
 
-// Collection operations are not publicly available (important-comment)
+// TODO: Collection operations are not publicly available
 // const getCollectionImagesOperation: INodeProperties[] = [
 // 	{
 // 		displayName: 'Collection',
@@ -567,7 +569,7 @@ export const gyazoFields: INodeProperties[] = [
 	...listOperation,
 	...getOperation,
 	...uploadOperation,
-	// Collection operations are not publicly available (important-comment)
+	// TODO: Collection operations are not publicly available
 	// ...getCollectionOperation,
 	// ...createCollectionOperation,
 	// ...getCollectionImagesOperation,
