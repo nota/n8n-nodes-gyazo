@@ -57,8 +57,7 @@ export const gyazoOperations: INodeProperties[] = [
 			{
 				name: 'Search',
 				value: 'search',
-				description:
-					'Search for images (Pro users only – see the Gyazo API Search documentation: https://gyazo.com/api/docs/search)',
+				description: 'Search for images (Pro users only)',
 				action: 'Search for images',
 				routing: {
 					request: {
