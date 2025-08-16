@@ -129,6 +129,7 @@ const searchOperation: INodeProperties[] = [
 		default: '',
 		required: true,
 		typeOptions: {
+			// The maxLength constraint comes from the Gyazo API specification (see https://gyazo.com/api/docs/search)
 			maxLength: 200,
 		},
 		displayOptions: {
