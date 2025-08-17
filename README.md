@@ -181,6 +181,7 @@ Upload an image to Gyazo.
 
 - **Image Binary** (required): Name of the binary property containing image data (default: `data`)
 - **App Name** (optional): Application name (default: `n8n`)
+- **Collection ID** (optional): Collection ID to add image to
 - **Description** (optional): Description for the image
 - **Referer URL** (optional): Referer site URL
 - **Title** (optional): Title for the image
