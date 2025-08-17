@@ -17,10 +17,6 @@ This is an n8n community node that integrates [Gyazo](https://gyazo.com) with yo
       - [Get](#get)
       - [Search](#search)
       - [Upload](#upload)
-    - [Collection Operations](#collection-operations)
-      - [Get](#get-1)
-      - [Create](#create)
-      - [Get Collection Images](#get-collection-images)
   - [Credentials](#credentials)
     - [Setting up Gyazo API Access](#setting-up-gyazo-api-access)
     - [Configuring credentials in n8n](#configuring-credentials-in-n8n)
@@ -28,7 +24,6 @@ This is an n8n community node that integrates [Gyazo](https://gyazo.com) with yo
   - [Usage](#usage)
     - [Basic Image Upload Workflow](#basic-image-upload-workflow)
     - [Search and Process Images](#search-and-process-images)
-    - [Collection Management](#collection-management)
   - [Resources](#resources)
   - [Release](#release)
     - [Publishing to npm](#publishing-to-npm)
@@ -47,7 +42,7 @@ For self-hosted n8n instances, you can install this community node by following 
 
 1. Go to **Settings > Community Nodes** in your n8n instance
 2. Select **Install**
-3. Enter `n8n-nodes-gyazo` in the npm Package Name field
+3. Enter `@notainc/n8n-nodes-gyazo` in the npm Package Name field
 4. Agree to the risks of using community nodes: select **I understand the risks of installing unverified code from a public source**
 5. Select **Install**
 
@@ -59,7 +54,7 @@ For n8n cloud users:
 
 1. Go to **Settings > Community Nodes** in your n8n cloud instance
 2. Select **Install**
-3. Enter `n8n-nodes-gyazo` in the npm Package Name field
+3. Enter `@notainc/n8n-nodes-gyazo` in the npm Package Name field
 4. Select **Install**
 
 n8n cloud will automatically restart and register the community node.
@@ -97,7 +92,7 @@ To install this node for development:
 
    ```bash
    # In your n8n custom nodes directory (usually ~/.n8n/custom/)
-   npm link n8n-nodes-gyazo
+   npm link @notainc/n8n-nodes-gyazo
    ```
 
 6. Start n8n:
@@ -107,7 +102,7 @@ To install this node for development:
 
 ## Operations
 
-The Gyazo node supports two main resources: **Image** and **Collection**.
+The Gyazo node supports the **Image** resource.
 
 ### Image Operations
 
@@ -165,7 +160,7 @@ Retrieve a specific image by ID or URL.
 
 #### Search
 
-Search for images using a query string with pagination support.
+Search for images using a query string with pagination support (Pro users only).
 
 **Parameters:**
 
@@ -186,7 +181,6 @@ Upload an image to Gyazo.
 
 - **Image Binary** (required): Name of the binary property containing image data (default: `data`)
 - **App Name** (optional): Application name (default: `n8n`)
-- **Collection ID** (optional): Collection ID to add image to
 - **Description** (optional): Description for the image
 - **Referer URL** (optional): Referer site URL
 - **Title** (optional): Title for the image
@@ -204,38 +198,6 @@ Upload an image to Gyazo.
 }
 ```
 
-### Collection Operations
-
-#### Get
-
-Retrieve a specific collection by ID or URL.
-
-**Parameters:**
-
-- **Collection**: Resource locator supporting:
-  - **ID**: 32-character hexadecimal string
-  - **URL**: Full Gyazo collection URL (e.g., `https://gyazo.com/collections/abc123def456789012345678901234ef`)
-
-#### Create
-
-Create a new collection.
-
-**Parameters:**
-
-- **Name** (optional): Name of the collection
-- **Image IDs** (optional): Array of image IDs to add to the collection
-
-**Note:** The "collection" scope is required in your Gyazo API application permissions. You must regenerate your access token after adding this scope.
-
-#### Get Collection Images
-
-Retrieve images from a specific collection with pagination support.
-
-**Parameters:**
-
-- **Collection**: Resource locator (ID or URL)
-- **Page** (optional): Page number for pagination (default: 1)
-- **Per Page** (optional): Number of results per page, max 100 (default: 20)
 
 ## Credentials
 
@@ -250,7 +212,6 @@ To use this node, you need to configure Gyazo API credentials:
    - Fill in your application details
 3. **Generate an access token**:
    - Use the OAuth flow or generate a personal access token
-   - For collection operations, ensure your application has the "collection" scope
 
 ### Configuring credentials in n8n
 
@@ -290,14 +251,6 @@ This node is compatible with:
 2. **Process results** with additional nodes (e.g., filter, transform)
 3. **Use image URLs** in subsequent workflow steps
 
-### Collection Management
-
-1. **Create a collection**:
-   - Set Resource to "Collection"
-   - Set Operation to "Create"
-   - Provide collection name and optional image IDs
-2. **Add images to collection** during upload by specifying Collection ID
-3. **Retrieve collection images** for processing or analysis
 
 ## Resources
 
@@ -320,7 +273,7 @@ To publish a new version:
 
 ## Version History
 
-- **0.2.0** - Removed support for collection operations, including get collection images
+- **0.2.0** - Removed support for collection operations, added Pro user restrictions for search
 - **0.1.0** - Initial release with image and collection operations
 
 ## Troubleshooting
@@ -333,7 +286,6 @@ To publish a new version:
 
 - Verify your access token is correct and hasn't expired
 - Ensure your Gyazo application has the necessary scopes
-- For collection operations, regenerate your access token after adding the "collection" scope
 
 ### Invalid Resource Format
 
@@ -343,7 +295,6 @@ To publish a new version:
 
 - Image IDs must be 32-character hexadecimal strings
 - Gyazo URLs must follow the format: `https://gyazo.com/{image_id}`
-- Collection URLs must follow: `https://gyazo.com/collections/{collection_id}`
 
 ### Upload Issues
 
