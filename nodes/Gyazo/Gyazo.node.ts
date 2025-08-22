@@ -73,10 +73,19 @@ export class Gyazo implements INodeType {
 									},
 								);
 
-								returnData.push({
-									json: response,
-									pairedItem: { item: i },
-								});
+								if (Array.isArray(response)) {
+									response.forEach((item) => {
+										returnData.push({
+											json: item,
+											pairedItem: { item: i },
+										});
+									});
+								} else {
+									returnData.push({
+										json: response,
+										pairedItem: { item: i },
+									});
+								}
 								break;
 							}
 
@@ -186,10 +195,19 @@ export class Gyazo implements INodeType {
 									},
 								);
 
-								returnData.push({
-									json: response,
-									pairedItem: { item: i },
-								});
+								if (Array.isArray(response)) {
+									response.forEach((item) => {
+										returnData.push({
+											json: item,
+											pairedItem: { item: i },
+										});
+									});
+								} else {
+									returnData.push({
+										json: response,
+										pairedItem: { item: i },
+									});
+								}
 								break;
 							}
 
