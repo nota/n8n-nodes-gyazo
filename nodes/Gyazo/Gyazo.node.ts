@@ -73,9 +73,11 @@ export class Gyazo implements INodeType {
 									},
 								);
 
-								returnData.push({
-									json: response,
-									pairedItem: { item: i },
+								response.forEach((item: any) => {
+									returnData.push({
+										json: item,
+										pairedItem: { item: i },
+									});
 								});
 								break;
 							}
@@ -186,9 +188,11 @@ export class Gyazo implements INodeType {
 									},
 								);
 
-								returnData.push({
-									json: response,
-									pairedItem: { item: i },
+								response.forEach((item: any) => {
+									returnData.push({
+										json: item,
+										pairedItem: { item: i },
+									});
 								});
 								break;
 							}
