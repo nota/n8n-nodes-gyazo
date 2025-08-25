@@ -17,6 +17,7 @@ This is an n8n community node that integrates [Gyazo](https://gyazo.com) with yo
       - [Get](#get)
       - [Search](#search)
       - [Upload](#upload)
+      - [Update](#update)
   - [Credentials](#credentials)
     - [Setting up Gyazo API Access](#setting-up-gyazo-api-access)
     - [Configuring credentials in n8n](#configuring-credentials-in-n8n)
@@ -199,6 +200,36 @@ Upload an image to Gyazo.
 }
 ```
 
+#### Update
+
+Update an existing image's description and alt text.
+
+**Parameters:**
+
+- **Image**: Resource locator supporting:
+  - **By ID**: 32-character hexadecimal string (e.g., `abc123def456789012345678901234ef`)
+  - **By URL**: Full Gyazo URL (e.g., `https://gyazo.com/abc123def456789012345678901234ef`)
+- **Description** (optional): Description for the image
+- **Alt Text** (optional): Alternative text for the image
+
+**Example output:**
+
+```json
+{
+	"image_id": "abc123def456789012345678901234ef",
+	"type": "png",
+	"created_at": "2024-01-15T10:30:00+0000",
+	"permalink_url": "https://gyazo.com/abc123def456789012345678901234ef",
+	"thumb_url": "https://thumb.gyazo.com/thumb/200/_abc123def456789012345678901234ef.png",
+	"url": "https://i.gyazo.com/abc123def456789012345678901234ef.png",
+	"metadata": {
+		"app": "n8n",
+		"title": "Screenshot",
+		"desc": "Updated description",
+		"alt_text": "Updated alt text"
+	}
+}
+```
 
 ## Credentials
 
