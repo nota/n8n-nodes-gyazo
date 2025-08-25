@@ -55,6 +55,18 @@ export const gyazoOperations: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'Update',
+				value: 'update',
+				description: 'Update image description and alt text',
+				action: 'Update an image',
+				routing: {
+					request: {
+						method: 'PATCH',
+						url: '/api/images/{{$parameter["imageId"]}}',
+					},
+				},
+			},
+			{
 				name: 'Search',
 				value: 'search',
 				description: 'Search for images (Pro users only)',
