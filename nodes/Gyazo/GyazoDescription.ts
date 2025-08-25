@@ -31,18 +31,6 @@ export const gyazoOperations: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'List',
-				value: 'list',
-				description: "Get a list of user's saved images",
-				action: 'List user images',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/api/images',
-					},
-				},
-			},
-			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a specific image by ID or URL',
@@ -55,14 +43,14 @@ export const gyazoOperations: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Update',
-				value: 'update',
-				description: 'Update image description and alt text',
-				action: 'Update an image',
+				name: 'List',
+				value: 'list',
+				description: "Get a list of user's saved images",
+				action: 'List user images',
 				routing: {
 					request: {
-						method: 'PATCH',
-						url: '/api/images/{{$parameter["imageId"]}}',
+						method: 'GET',
+						url: '/api/images',
 					},
 				},
 			},
@@ -75,6 +63,18 @@ export const gyazoOperations: INodeProperties[] = [
 					request: {
 						method: 'GET',
 						url: '/api/search',
+					},
+				},
+			},
+			{
+				name: 'Update',
+				value: 'update',
+				description: 'Update image description and alt text',
+				action: 'Update an image',
+				routing: {
+					request: {
+						method: 'PATCH',
+						url: '/api/images/{{$parameter["imageId"]}}',
 					},
 				},
 			},
