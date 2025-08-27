@@ -118,58 +118,6 @@ export class Gyazo implements INodeType {
 								break;
 							}
 
-							case 'update': {
-								const image = this.getNodeParameter('image', i) as { mode: string; value: string };
-								let imageId: string;
-
-								if (image.mode === 'id') {
-									imageId = image.value;
-								} else if (image.mode === 'url') {
-									const match = image.value.match(/^https:\/\/gyazo\.com\/([a-f0-9]{32})$/i);
-									if (!match) {
-										throw new NodeOperationError(
-											this.getNode(),
-											`Invalid Gyazo URL format: ${image.value}`,
-											{ itemIndex: i },
-										);
-									}
-									imageId = match[1];
-								} else {
-									throw new NodeOperationError(this.getNode(), 'Invalid image parameter mode', {
-										itemIndex: i,
-									});
-								}
-
-								const options = this.getNodeParameter('options', i, {}) as any;
-								const desc = options.desc || '';
-								const altText = options.altText || '';
-
-								const requestBody: any = {};
-								if (desc) {
-									requestBody.desc = desc;
-								}
-								if (altText) {
-									requestBody.alt_text = altText;
-								}
-
-								const response = await this.helpers.httpRequestWithAuthentication.call(
-									this,
-									'gyazoApi',
-									{
-										method: 'PATCH',
-										url: `https://api.gyazo.com/api/images/${imageId}`,
-										body: requestBody,
-										json: true,
-									},
-								);
-
-								returnData.push({
-									json: response,
-									pairedItem: { item: i },
-								});
-								break;
-							}
-
 							case 'upload': {
 								const credentials = await this.getCredentials('gyazoApi');
 								const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i) as string;
@@ -242,6 +190,57 @@ export class Gyazo implements INodeType {
 										json: item,
 										pairedItem: { item: i },
 									});
+								});
+								break;
+							}
+
+							case 'update': {
+								const image = this.getNodeParameter('image', i) as { mode: string; value: string };
+								let imageId: string;
+
+								if (image.mode === 'id') {
+									imageId = image.value;
+								} else if (image.mode === 'url') {
+									const match = image.value.match(/^https:\/\/gyazo\.com\/([a-f0-9]{32})$/i);
+									if (!match) {
+										throw new NodeOperationError(
+											this.getNode(),
+											`Invalid Gyazo URL format: ${image.value}`,
+											{ itemIndex: i },
+										);
+									}
+									imageId = match[1];
+								} else {
+									throw new NodeOperationError(this.getNode(), 'Invalid image parameter mode', {
+										itemIndex: i,
+									});
+								}
+
+								const desc = this.getNodeParameter('desc', i, '') as string;
+								const altText = this.getNodeParameter('altText', i, '') as string;
+
+								const requestBody: any = {};
+								if (desc) {
+									requestBody.desc = desc;
+								}
+								if (altText) {
+									requestBody.alt_text = altText;
+								}
+
+								const response = await this.helpers.httpRequestWithAuthentication.call(
+									this,
+									'gyazoApi',
+									{
+										method: 'PATCH',
+										url: `https://api.gyazo.com/api/images/${imageId}`,
+										body: requestBody,
+										json: true,
+									},
+								);
+
+								returnData.push({
+									json: response,
+									pairedItem: { item: i },
 								});
 								break;
 							}
