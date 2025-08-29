@@ -31,18 +31,6 @@ export const gyazoOperations: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'List',
-				value: 'list',
-				description: "Get a list of user's saved images",
-				action: 'List user images',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/api/images',
-					},
-				},
-			},
-			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a specific image by ID or URL',
@@ -55,6 +43,18 @@ export const gyazoOperations: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'List',
+				value: 'list',
+				description: "Get a list of user's saved images",
+				action: 'List user images',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/api/images',
+					},
+				},
+			},
+			{
 				name: 'Search',
 				value: 'search',
 				description: 'Search for images (Pro users only)',
@@ -63,6 +63,18 @@ export const gyazoOperations: INodeProperties[] = [
 					request: {
 						method: 'GET',
 						url: '/api/search',
+					},
+				},
+			},
+			{
+				name: 'Update',
+				value: 'update',
+				description: 'Update image description and alt text',
+				action: 'Update an image attributes',
+				routing: {
+					request: {
+						method: 'PATCH',
+						url: '/api/images/{{$parameter["imageId"]}}',
 					},
 				},
 			},
@@ -374,6 +386,87 @@ const uploadOperation: INodeProperties[] = [
 	},
 ];
 
+const updateOperation: INodeProperties[] = [
+	{
+		displayName: 'Image',
+		name: 'image',
+		type: 'resourceLocator',
+		default: { mode: 'id', value: '' },
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['image'],
+				operation: ['update'],
+			},
+		},
+		modes: [
+			{
+				displayName: 'By ID',
+				name: 'id',
+				type: 'string',
+				hint: 'Enter an Image ID',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: '^[a-f0-9]{32}$',
+							errorMessage: 'Invalid Image ID format',
+						},
+					},
+				],
+				placeholder: 'ab1234cd5678ef9012ab3456cd7890ef',
+			},
+			{
+				displayName: 'By URL',
+				name: 'url',
+				type: 'string',
+				hint: 'Enter a Gyazo URL',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: '^https://gyazo\\.com/[a-f0-9]{32}$',
+							errorMessage: 'Invalid Gyazo URL format',
+						},
+					},
+				],
+				placeholder: 'https://gyazo.com/ab1234cd5678ef9012ab3456cd7890ef',
+				extractValue: {
+					type: 'regex',
+					regex: '^https://gyazo\\.com/([a-f0-9]{32})$',
+				},
+			},
+		],
+		description: 'The Gyazo image to update',
+	},
+	{
+		displayName: 'Description',
+		name: 'desc',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['image'],
+				operation: ['update'],
+			},
+		},
+		description: 'Description for the image',
+	},
+	{
+		displayName: 'Alt Text',
+		name: 'altText',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['image'],
+				operation: ['update'],
+			},
+		},
+		description: 'Alternative text for the image',
+	},
+];
+
 // TODO: Collection operations are not publicly available
 // const getCollectionImagesOperation: INodeProperties[] = [
 // 	{
@@ -568,6 +661,7 @@ export const gyazoFields: INodeProperties[] = [
 	...listOperation,
 	...getOperation,
 	...uploadOperation,
+	...updateOperation,
 	// TODO: Collection operations are not publicly available
 	// ...getCollectionOperation,
 	// ...createCollectionOperation,
