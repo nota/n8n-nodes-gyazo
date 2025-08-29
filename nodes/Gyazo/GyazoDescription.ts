@@ -440,30 +440,33 @@ const updateOperation: INodeProperties[] = [
 		description: 'The Gyazo image to update',
 	},
 	{
-		displayName: 'Description',
-		name: 'desc',
-		type: 'string',
-		default: '',
+		displayName: 'Options',
+		name: 'options',
+		type: 'fixedCollection',
+		placeholder: 'Add Fields',
+		default: {},
 		displayOptions: {
 			show: {
 				resource: ['image'],
 				operation: ['update'],
 			},
 		},
-		description: 'Description for the image',
-	},
-	{
-		displayName: 'Alt Text',
-		name: 'altText',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['image'],
-				operation: ['update'],
+		options: [
+			{
+				displayName: 'Description',
+				name: 'desc',
+				type: 'string',
+				default: '',
+				description: 'Description for the image',
 			},
-		},
-		description: 'Alternative text for the image',
+			{
+				displayName: 'Alt Text',
+				name: 'altText',
+				type: 'string',
+				default: '',
+				description: 'Alternative text for the image',
+			},
+		],
 	},
 ];
 

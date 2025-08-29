@@ -216,14 +216,15 @@ export class Gyazo implements INodeType {
 									});
 								}
 
-								const desc = this.getNodeParameter('desc', i, '') as string;
-								const altText = this.getNodeParameter('altText', i, '') as string;
+								const options = this.getNodeParameter('options', i, {}) as any;
+								const desc = options.desc;
+								const altText = options.altText;
 
 								const requestBody: any = {};
-								if (desc) {
+								if (desc !== undefined && desc !== '') {
 									requestBody.desc = desc;
 								}
-								if (altText) {
+								if (altText !== undefined && altText !== '') {
 									requestBody.alt_text = altText;
 								}
 
