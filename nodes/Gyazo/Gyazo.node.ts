@@ -221,10 +221,10 @@ export class Gyazo implements INodeType {
 								const altText = options.altText;
 
 								const requestBody: any = {};
-								if (desc !== undefined && desc !== '') {
+								if (desc !== undefined) {
 									requestBody.desc = desc;
 								}
-								if (altText !== undefined && altText !== '') {
+								if (altText !== undefined) {
 									requestBody.alt_text = altText;
 								}
 
