@@ -217,8 +217,9 @@ export class Gyazo implements INodeType {
 								}
 
 								const options = this.getNodeParameter('options', i, {}) as any;
-								const desc = options.desc;
-								const altText = options.altText;
+								const fields = options.fields || {};
+								const desc = fields.desc;
+								const altText = fields.altText;
 
 								const requestBody: any = {};
 								if (desc !== undefined) {

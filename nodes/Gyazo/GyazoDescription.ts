@@ -453,18 +453,24 @@ const updateOperation: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Description',
-				name: 'desc',
-				type: 'string',
-				default: '',
-				description: 'Description for the image',
-			},
-			{
-				displayName: 'Alt Text',
-				name: 'altText',
-				type: 'string',
-				default: '',
-				description: 'Alternative text for the image',
+				name: 'fields',
+				displayName: 'Fields',
+				values: [
+					{
+						displayName: 'Description',
+						name: 'desc',
+						type: 'string',
+						default: '',
+						description: 'Description for the image',
+					},
+					{
+						displayName: 'Alt Text',
+						name: 'altText',
+						type: 'string',
+						default: '',
+						description: 'Alternative text for the image',
+					},
+				],
 			},
 		],
 	},
