@@ -133,26 +133,37 @@ export class Gyazo implements INodeType {
 								const desc = options.desc || '';
 								const collectionId = options.collectionId || '';
 
-								const response = await this.helpers.request({
+								const formData: { [key: string]: any } = {
+									imagedata: {
+										value: binaryBuffer,
+										options: {
+											filename: binaryData.fileName || 'image',
+											contentType: binaryData.mimeType || 'application/octet-stream',
+										},
+									},
+									app,
+								};
+
+								if (refererUrl) {
+									formData.referer_url = refererUrl;
+								}
+								if (title) {
+									formData.title = title;
+								}
+								if (desc) {
+									formData.desc = desc;
+								}
+								if (collectionId) {
+									formData.collection_id = collectionId;
+								}
+
+								const response = await this.helpers.httpRequest({
 									method: 'POST',
 									url: 'https://upload.gyazo.com/api/upload',
 									headers: {
 										Authorization: `Bearer ${credentials.accessToken}`,
 									},
-									formData: {
-										imagedata: {
-											value: binaryBuffer,
-											options: {
-												filename: binaryData.fileName || 'image',
-												contentType: binaryData.mimeType || 'application/octet-stream',
-											},
-										},
-										app,
-										...(refererUrl && { referer_url: refererUrl }),
-										...(title && { title }),
-										...(desc && { desc }),
-										...(collectionId && { collection_id: collectionId }),
-									},
+									body: formData,
 									json: true,
 								});
 
