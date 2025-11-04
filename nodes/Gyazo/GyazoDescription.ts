@@ -35,64 +35,30 @@ export const gyazoOperations: INodeProperties[] = [
 				value: 'get',
 				description: 'Get a specific image by ID or URL',
 				action: 'Get an image',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/api/images/{{$parameter["imageId"]}}',
-					},
-				},
 			},
 			{
 				name: 'List',
 				value: 'list',
 				description: "Get a list of user's saved images",
 				action: 'List user images',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/api/images',
-					},
-				},
 			},
 			{
 				name: 'Search',
 				value: 'search',
 				description: 'Search for images (Pro users only)',
 				action: 'Search for images',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/api/search',
-					},
-				},
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update image description and alt text',
 				action: 'Update an image attributes',
-				routing: {
-					request: {
-						method: 'PATCH',
-						url: '/api/images/{{$parameter["imageId"]}}',
-					},
-				},
 			},
 			{
 				name: 'Upload',
 				value: 'upload',
 				description: 'Upload an image',
 				action: 'Upload an image',
-				routing: {
-					request: {
-						method: 'POST',
-						url: '/api/upload',
-						baseURL: 'https://upload.gyazo.com',
-						headers: {
-							'Content-Type': 'multipart/form-data',
-						},
-					},
-				},
 			},
 		],
 		default: 'search',
@@ -149,12 +115,6 @@ const searchOperation: INodeProperties[] = [
 				operation: ['search'],
 			},
 		},
-		routing: {
-			send: {
-				type: 'query',
-				property: 'query',
-			},
-		},
 		description: 'Search query for images (max 200 characters)',
 	},
 	{
@@ -179,12 +139,6 @@ const searchOperation: INodeProperties[] = [
 						name: 'page',
 						type: 'number',
 						default: 1,
-						routing: {
-							send: {
-								type: 'query',
-								property: 'page',
-							},
-						},
 						description: 'Page number for pagination',
 					},
 					{
@@ -195,12 +149,6 @@ const searchOperation: INodeProperties[] = [
 						typeOptions: {
 							minValue: 1,
 							maxValue: 100,
-						},
-						routing: {
-							send: {
-								type: 'query',
-								property: 'per',
-							},
 						},
 						description: 'Number of results per page (max 100)',
 					},
@@ -233,12 +181,6 @@ const listOperation: INodeProperties[] = [
 						name: 'page',
 						type: 'number',
 						default: 1,
-						routing: {
-							send: {
-								type: 'query',
-								property: 'page',
-							},
-						},
 						description: 'Page number for pagination',
 					},
 					{
@@ -249,12 +191,6 @@ const listOperation: INodeProperties[] = [
 						typeOptions: {
 							minValue: 1,
 							maxValue: 100,
-						},
-						routing: {
-							send: {
-								type: 'query',
-								property: 'per_page',
-							},
 						},
 						description: 'Number of results per page (max 100)',
 					},
