@@ -257,13 +257,9 @@ export class Gyazo implements INodeType {
 							}
 
 							default:
-								throw new NodeOperationError(
-									this.getNode(),
-									`Unknown image operation: ${operation}`,
-									{
-										itemIndex: i,
-									},
-								);
+								throw new NodeOperationError(this.getNode(), `Unknown operation: ${operation}`, {
+									itemIndex: i,
+								});
 						}
 						break;
 
