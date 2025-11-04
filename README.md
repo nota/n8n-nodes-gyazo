@@ -291,7 +291,7 @@ This node is compatible with:
 
 ## Release
 
-This package follows semantic versioning. Current version: **0.3.1**
+This package follows semantic versioning. Current version: **0.3.2**
 
 ### Publishing to npm
 
@@ -304,6 +304,7 @@ To publish a new version:
 
 ## Version History
 
+- **0.3.2** - Fixed versioning issue in package.json
 - **0.3.1** - Unified node styles into the programmatic
 - **0.3.0** - Support updating image description and alt text, improved error handling
 - **0.2.0** - Removed support for collection operations, added Pro user restrictions for search
