@@ -283,7 +283,6 @@ This node is compatible with:
 2. **Process results** with additional nodes (e.g., filter, transform)
 3. **Use image URLs** in subsequent workflow steps
 
-
 ## Resources
 
 - [Gyazo API Documentation](https://gyazo.com/api/docs)
@@ -292,7 +291,7 @@ This node is compatible with:
 
 ## Release
 
-This package follows semantic versioning. Current version: **0.3.0**
+This package follows semantic versioning. Current version: **0.3.1**
 
 ### Publishing to npm
 
@@ -305,6 +304,7 @@ To publish a new version:
 
 ## Version History
 
+- **0.3.1** - Unified node styles into the programmatic
 - **0.3.0** - Support updating image description and alt text, improved error handling
 - **0.2.0** - Removed support for collection operations, added Pro user restrictions for search
 - **0.1.0** - Initial release with image and collection operations
