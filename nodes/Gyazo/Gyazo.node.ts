@@ -29,12 +29,6 @@ export class Gyazo implements INodeType {
 				required: true,
 			},
 		],
-		requestDefaults: {
-			baseURL: 'https://api.gyazo.com',
-			headers: {
-				Accept: 'application/json',
-			},
-		},
 		properties: [...gyazoOperations, ...gyazoFields],
 	};
 
